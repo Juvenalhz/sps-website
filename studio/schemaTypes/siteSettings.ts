@@ -12,9 +12,27 @@ export const siteSettings = defineType({
     }),
     defineField({
       name: 'logo',
-      title: 'Logo Principal del Sitio',
+      title: 'Logo Principal (Header)',
       type: 'image',
       description: 'Tamaño recomendado: 400 x 120 px (PNG transparente o SVG)',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: 'footerLogo',
+      title: 'Logo del Pie de Página (Footer)',
+      type: 'image',
+      description: 'Logo o escudo para el footer (si no se sube uno nuevo, se usará el logo principal)',
+      options: {
+        hotspot: true,
+      },
+    }),
+    defineField({
+      name: 'favicon',
+      title: 'Icono del Navegador (Favicon / Isotipo)',
+      type: 'image',
+      description: 'Icono para la pestaña del navegador (si no se sube uno nuevo, se usará el logo principal)',
       options: {
         hotspot: true,
       },

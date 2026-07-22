@@ -1,15 +1,24 @@
 ---
 // src/components/Footer.astro
-import { getSiteSettings } from '../lib/queries';
+import { getSiteSettings } from "../lib/queries";
+import { urlFor } from "../lib/sanity";
 
 const settings = await getSiteSettings();
 
-const phone = settings?.contactPhone || '(0212) 952.52.42';
-const email = settings?.contactEmail || 'sps@spsrisk.com';
-const address = settings?.address || 'Av. Francisco de Miranda, Edif. EASO, Piso 3, Ofc. 3JK, El Rosal, Caracas.';
-const instagram = settings?.instagramUrl || '#';
-const facebook = settings?.facebookUrl || '#';
-const linkedin = settings?.linkedinUrl || '#';
+const phone = settings?.contactPhone || "(0212) 952.52.42";
+const email = settings?.contactEmail || "sps@spsrisk.com";
+const address =
+  settings?.address ||
+  "Av. Francisco de Miranda, Edif. EASO, Piso 3, Ofc. 3JK, El Rosal, Caracas.";
+const instagram = settings?.instagramUrl || "#";
+const facebook = settings?.facebookUrl || "#";
+const linkedin = settings?.linkedinUrl || "#";
+
+const footerLogoUrl = settings?.footerLogo
+  ? urlFor(settings.footerLogo)?.url()
+  : settings?.logo
+    ? urlFor(settings.logo)?.url()
+    : "/images/logo-sps-risk.png";
 ---
 
 <footer class="bg-sps-navy text-white pt-16 pb-10">
@@ -24,23 +33,28 @@ const linkedin = settings?.linkedinUrl || '#';
         <ul class="space-y-3 text-sm text-gray-300">
           <li>
             <a href="/" class="hover:text-sps-yellow transition-colors"
-              >Inicio</a>
+              >Inicio</a
+            >
           </li>
           <li>
             <a href="/nosotros" class="hover:text-sps-yellow transition-colors"
-              >Nosotros</a>
+              >Nosotros</a
+            >
           </li>
           <li>
             <a href="/servicios" class="hover:text-sps-yellow transition-colors"
-              >Servicios</a>
+              >Servicios</a
+            >
           </li>
           <li>
             <a href="/blog" class="hover:text-sps-yellow transition-colors"
-              >Blog</a>
+              >Blog</a
+            >
           </li>
           <li>
             <a href="/contacto" class="hover:text-sps-yellow transition-colors"
-              >Contacto</a>
+              >Contacto</a
+            >
           </li>
         </ul>
       </div>
@@ -55,8 +69,8 @@ const linkedin = settings?.linkedinUrl || '#';
           <li>
             <a
               href={`mailto:${email}`}
-              class="hover:text-sps-yellow transition-colors"
-              >{email}</a>
+              class="hover:text-sps-yellow transition-colors">{email}</a
+            >
           </li>
         </ul>
         <div class="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
@@ -74,36 +88,40 @@ const linkedin = settings?.linkedinUrl || '#';
             <a
               href="/servicios#instalaciones"
               class="hover:text-sps-yellow transition-colors"
-              >Protección de instalaciones</a>
+              >Protección de instalaciones</a
+            >
           </li>
           <li>
             <a
               href="/servicios#ejecutiva"
               class="hover:text-sps-yellow transition-colors"
-              >Protección ejecutiva</a>
+              >Protección ejecutiva</a
+            >
           </li>
           <li>
             <a
               href="/servicios#electronica"
               class="hover:text-sps-yellow transition-colors"
-              >Seguridad electrónica</a>
+              >Seguridad electrónica</a
+            >
           </li>
           <li>
             <a
               href="/servicios#industrial"
               class="hover:text-sps-yellow transition-colors"
-              >Seguridad Industrial</a>
+              >Seguridad Industrial</a
+            >
           </li>
         </ul>
       </div>
 
-      <!-- Columna 4: Escudo SPS Risk -->
-      <div class="flex justify-lg-end items-center">
-        <div class="w-full max-w-[240px]">
+      <!-- Columna 4: Escudo / Logo SPS Risk -->
+      <div class="flex justify-start lg:justify-end items-center">
+        <div class="w-full max-w-[280px]">
           <img
-            src="/images/logo-sps-risk.png"
+            src={footerLogoUrl}
             alt="SPS Risk Vigilancia"
-            class="w-full h-auto object-contain"
+            class="w-full h-auto max-h-60 object-contain"
             onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
           />
           <div

@@ -5,11 +5,9 @@ export default defineCliConfig({
     projectId: 'urb5qo9n',
     dataset: 'production'
   },
+  studioHost: 'sps-website',
   deployment: {
-    /**
-     * Enable auto-updates for studios.
-     * Learn more at https://www.sanity.io/docs/studio/latest-version-of-sanity#k47faf43faf56
-     */
+    appId: 'vqp7gdk2bhxnwgg8z8o2hmxn',
     autoUpdates: true,
   },
 })
