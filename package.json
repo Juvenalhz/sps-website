@@ -8,11 +8,13 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
-    "preview": "astro preview",
-    "deploy": "astro build && wrangler pages deploy dist --project-name sps-website",
-    "astro": "astro"
+    "preview": "npm run build && wrangler dev",
+    "deploy": "npm run build && wrangler deploy",
+    "astro": "astro",
+    "generate-types": "wrangler types"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.1.4",
     "@floating-ui/dom": "^1.8.0",
     "@portabletext/to-html": "^5.0.2",
     "@sanity/client": "^7.24.0",
