@@ -1,0 +1,143 @@
+---
+// src/pages/nosotros.astro
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Estadisticas from "../components/Estadisticas.astro";
+import Clientes from "../components/Clientes.astro";
+---
+
+<BaseLayout title="Sobre Nosotros">
+  <!-- Hero Encabezado -->
+  <section class="bg-gradient-to-r from-sps-navy via-[#073067] to-sps-blue text-white py-20 lg:py-28 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+      <span class="inline-block px-4 py-1.5 rounded-full bg-sps-yellow/20 text-sps-yellow text-xs sm:text-sm font-bold tracking-wider uppercase mb-4">
+        Trayectoria & Liderazgo
+      </span>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-oswald font-bold uppercase tracking-tight mb-6">
+        Sobre Nosotros
+      </h1>
+      <p class="max-w-3xl mx-auto text-gray-200 text-base sm:text-lg font-light leading-relaxed">
+        Más de 20 años protegiendo activos corporativos, infraestructura crítica y el talento humano con estándares internacionales de seguridad.
+      </p>
+    </div>
+  </section>
+
+  <!-- Historia / Quiénes Somos -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+      <div>
+        <span class="text-sps-blue font-bold uppercase text-sm tracking-wider">Quiénes Somos</span>
+        <h2 class="text-3xl sm:text-4xl font-oswald font-bold text-sps-navy uppercase tracking-tight mt-2 mb-6">
+          Soluciones de Seguridad Integral Diseñadas para Entornos Complejos
+        </h2>
+        <p class="text-gray-600 text-base leading-relaxed mb-6">
+          En <strong>SPS Seguridad</strong> nos especializamos en la prevención, gestión de riesgos e implementación de tecnología de punta para salvaguardar empresas, instituciones e industrias.
+        </p>
+        <p class="text-gray-600 text-base leading-relaxed mb-8">
+          Entendemos la seguridad no como elementos aislados, sino como una estrategia unificada que integra personal altamente calificado, ciberseguridad, monitoreo continuo y protocolos de respuesta rápida.
+        </p>
+        <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100">
+          <div>
+            <span class="block text-3xl font-oswald font-bold text-sps-blue">+20 Años</span>
+            <span class="text-xs text-gray-500 uppercase tracking-wider">De Operación Continua</span>
+          </div>
+          <div>
+            <span class="block text-3xl font-oswald font-bold text-sps-blue">100%</span>
+            <span class="text-xs text-gray-500 uppercase tracking-wider">Cobertura Nacional</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="relative">
+        <div class="w-full h-[420px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-[30px] flex items-center justify-center text-gray-400">
+          <div class="text-center p-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a5.97 5.97 0 00-.942 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+            </svg>
+            <span class="text-sm font-medium text-gray-400">Equipo Directivo & Operativo SPS</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Misión, Visión y Valores -->
+  <section class="bg-gray-50 py-20 lg:py-24">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <h2 class="text-3xl sm:text-4xl font-oswald font-bold text-sps-navy uppercase tracking-tight mb-4">
+          Nuestros Pilares Fundamentales
+        </h2>
+        <p class="text-gray-600">
+          Principios que guían nuestro compromiso diario con la excelencia en seguridad.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <!-- Misión -->
+        <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-14 h-14 rounded-2xl bg-sps-blue/10 text-sps-blue flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold font-oswald text-sps-navy uppercase mb-3">Misión</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Proporcionar tranquilidad y protección integral a nuestros clientes mediante soluciones de seguridad avanzadas, adaptadas a los riesgos específicos de cada organización.
+          </p>
+        </div>
+
+        <!-- Visión -->
+        <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-14 h-14 rounded-2xl bg-sps-blue/10 text-sps-blue flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.573 16.49 16.638 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold font-oswald text-sps-navy uppercase mb-3">Visión</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Ser la empresa referente en seguridad corporativa e industrial a nivel nacional, destacándonos por la innovación tecnológica, ética profesional e integridad operativa.
+          </p>
+        </div>
+
+        <!-- Valores -->
+        <div class="bg-white p-8 rounded-3xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+          <div class="w-14 h-14 rounded-2xl bg-sps-blue/10 text-sps-blue flex items-center justify-center mb-6">
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold font-oswald text-sps-navy uppercase mb-3">Valores</h3>
+          <p class="text-gray-600 text-sm leading-relaxed">
+            Integridad, confidencialidad, excelencia en el servicio, disciplina táctica y constante actualización tecnológica al servicio de nuestros clientes.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Reutilizamos Componentes Existentes -->
+  <Estadisticas />
+  <Clientes />
+
+  <!-- Banner Call to Action -->
+  <section class="bg-sps-navy text-white py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8 text-center md:text-left">
+      <div>
+        <h3 class="text-2xl sm:text-3xl font-oswald font-bold uppercase mb-2">
+          ¿Listo para evaluar la seguridad de tu empresa?
+        </h3>
+        <p class="text-gray-300 text-sm sm:text-base">
+          Nuestros expertos realizarán un diagnóstico completo sin compromiso.
+        </p>
+      </div>
+      <a 
+        href="/contacto" 
+        class="bg-sps-yellow text-sps-navy hover:bg-yellow-400 font-bold px-8 py-3.5 rounded-full shadow-lg transition-all text-sm uppercase tracking-wider shrink-0"
+      >
+        Contactar Ahora
+      </a>
+    </div>
+  </section>
+</BaseLayout>

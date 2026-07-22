@@ -128,4 +128,34 @@ body {
   font-family: var(--font-base);
   background-color: var(--color-background);
   color: var(--color-text);
+  top: 0px !important;
+  position: static !important;
+}
+
+/* 4. OCULTAR BARRA SUPERIOR Y ELEMENTOS MOLESTOS DE GOOGLE TRANSLATE */
+.goog-te-banner-frame,
+iframe.goog-te-banner-frame,
+.goog-te-banner-frame.skiptranslate,
+iframe.skiptranslate,
+body > .skiptranslate,
+.VIpgJd-yDsrne-Lg4cad {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  height: 0 !important;
+  width: 0 !important;
+  pointer-events: none !important;
+}
+
+#google_translate_element,
+.goog-te-gadget,
+.goog-te-gadget-icon,
+.goog-te-spinner-pos {
+  display: none !important;
+}
+
+/* Eliminar resaltados amarillos/azules al pasar el mouse sobre el texto traducido */
+font[style] {
+  background-color: transparent !important;
+  box-shadow: none !important;
 }

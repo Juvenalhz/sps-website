@@ -3,6 +3,13 @@
 import { getSiteSettings } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 
+interface Props {
+  lang?: 'es' | 'en';
+}
+
+const { lang } = Astro.props;
+const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es');
+
 const settings = await getSiteSettings();
 const logoUrl = settings?.logo ? urlFor(settings.logo)?.url() : null;
 const siteTitle = settings?.siteTitle || 'SPS';
@@ -53,28 +60,30 @@ const siteTitle = settings?.siteTitle || 'SPS';
     <div class="hidden md:flex items-center gap-6">
       <!-- Selector de Idioma -->
       <div class="flex items-center gap-3 border-r-2 border-gray-200 pr-6">
-        <a
-          href="/es"
+        <button
+          type="button"
+          id="btn-lang-es"
           title="Español (Venezuela)"
-          class="hover:scale-110 transition-transform"
+          class="transition-all duration-200 opacity-40 hover:opacity-100 hover:scale-105 cursor-pointer p-0.5 rounded"
         >
           <img
             src="https://flagcdn.com/w20/ve.png"
             alt="Bandera Venezuela"
-            class="w-6 h-auto rounded-sm shadow-sm"
+            class="w-6 h-auto rounded-sm"
           />
-        </a>
-        <a
-          href="/en"
+        </button>
+        <button
+          type="button"
+          id="btn-lang-en"
           title="English (USA)"
-          class="hover:scale-110 transition-transform opacity-50 hover:opacity-100"
+          class="transition-all duration-200 opacity-40 hover:opacity-100 hover:scale-105 cursor-pointer p-0.5 rounded"
         >
           <img
             src="https://flagcdn.com/w20/us.png"
             alt="Bandera USA"
-            class="w-6 h-auto rounded-sm shadow-sm"
+            class="w-6 h-auto rounded-sm"
           />
-        </a>
+        </button>
       </div>
 
       <!-- Botón Call to Action -->
@@ -103,3 +112,58 @@ const siteTitle = settings?.siteTitle || 'SPS';
     </button>
   </div>
 </header>
+
+<script>
+  // @ts-nocheck
+  function setupLanguageSwitcher() {
+    const btnEn = document.getElementById('btn-lang-en');
+    const btnEs = document.getElementById('btn-lang-es');
+
+    function getCookie(name) {
+      const v = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
+      return v ? v[2] : null;
+    }
+
+    function updateFlagStyles() {
+      const googtrans = getCookie('googtrans') || '';
+      const isEnglish = googtrans.includes('/en') || window.location.pathname.startsWith('/en');
+
+      if (isEnglish) {
+        btnEn?.classList.add('scale-110', 'opacity-100', 'ring-2', 'ring-sps-blue', 'rounded-sm', 'shadow-md');
+        btnEn?.classList.remove('opacity-40');
+
+        btnEs?.classList.remove('scale-110', 'opacity-100', 'ring-2', 'ring-sps-blue', 'rounded-sm', 'shadow-md');
+        btnEs?.classList.add('opacity-40');
+      } else {
+        btnEs?.classList.add('scale-110', 'opacity-100', 'ring-2', 'ring-sps-blue', 'rounded-sm', 'shadow-md');
+        btnEs?.classList.remove('opacity-40');
+
+        btnEn?.classList.remove('scale-110', 'opacity-100', 'ring-2', 'ring-sps-blue', 'rounded-sm', 'shadow-md');
+        btnEn?.classList.add('opacity-40');
+      }
+    }
+
+    btnEn?.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.cookie = "googtrans=/es/en; path=/";
+      document.cookie = "googtrans=/es/en; domain=" + window.location.hostname + "; path=/";
+      window.location.reload();
+    });
+
+    btnEs?.addEventListener('click', (e) => {
+      e.preventDefault();
+      document.cookie = "googtrans=/es/es; path=/";
+      document.cookie = "googtrans=/es/es; domain=" + window.location.hostname + "; path=/";
+      if (window.location.pathname.startsWith('/en')) {
+        window.location.href = '/';
+      } else {
+        window.location.reload();
+      }
+    });
+
+    updateFlagStyles();
+  }
+
+  setupLanguageSwitcher();
+  document.addEventListener('astro:page-load', setupLanguageSwitcher);
+</script>

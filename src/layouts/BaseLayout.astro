@@ -4,27 +4,76 @@ import "../styles/global.css"; // Esto conecta Tailwind y tus colores
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 
-const { title } = Astro.props;
+const { title, lang } = Astro.props;
+const currentLang = lang || (Astro.url.pathname.startsWith('/en') ? 'en' : 'es');
 ---
 
-<html lang="es">
+<html lang={currentLang}>
 	<head>
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | SPS Seguridad</title>
+		
+		<!-- Widget de Traducción Automática de Google Translate (Client-Side Gratis) -->
+		<script type="text/javascript">
+			function googleTranslateElementInit() {
+				new google.translate.TranslateElement(
+					{
+						pageLanguage: 'es',
+						includedLanguages: 'en,es',
+						autoDisplay: false
+					},
+					'google_translate_element'
+				);
+			}
+		</script>
+		<script
+			type="text/javascript"
+			src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+		></script>
+		<style is:global>
+			/* Ocultar totalmente la barra superior emergente de Google Translate */
+			.goog-te-banner-frame,
+			iframe.goog-te-banner-frame,
+			.goog-te-banner-frame.skiptranslate,
+			iframe.skiptranslate,
+			body > .skiptranslate,
+			.VIpgJd-yDsrne-Lg4cad {
+				display: none !important;
+				visibility: hidden !important;
+				opacity: 0 !important;
+				height: 0 !important;
+				width: 0 !important;
+				pointer-events: none !important;
+			}
+			body {
+				top: 0px !important;
+				position: static !important;
+			}
+			#google_translate_element,
+			.goog-te-gadget,
+			.goog-te-gadget-icon,
+			.goog-te-spinner-pos {
+				display: none !important;
+			}
+			font[style] {
+				background-color: transparent !important;
+				box-shadow: none !important;
+			}
+		</style>
 	</head>
 	<body
 		class="bg-[var(--color-background)] text-[var(--color-text)] font-sans flex flex-col min-h-screen m-0 p-0"
 	>
-		<Header />
+		<div id="google_translate_element"></div>
+		<Header lang={currentLang} />
 
 		<main class="flex-grow w-full">
 			<slot />
-			<!-- Aquí se inyecta el contenido de cada página -->
 		</main>
 
-		<Footer />
+		<Footer lang={currentLang} />
 	</body>
 </html>

@@ -1,52 +1,32 @@
 ---
-import BaseLayout from '../../layouts/BaseLayout.astro';
-import HeroInteractivo from '../../components/HeroInteractivo.astro';
-import CardServicio from '../../components/CardServicio.astro';
-import { getTranslation } from '../../utils/i18n';
+// src/pages/en/index.astro
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Hero from "../../components/Hero.astro";
+import HeroInteractivo from "../../components/HeroInteractivo.astro";
+import SobreNosotros from "../../components/SobreNosotros.astro";
+import PorQueElegirnos from "../../components/PorQueElegirnos.astro";
+import Estadisticas from "../../components/Estadisticas.astro";
+import Clientes from "../../components/Clientes.astro";
+import Ubicacion from "../../components/Ubicacion.astro";
+import BlogPreview from "../../components/BlogPreview.astro";
+import { getTranslation } from "../../utils/i18n";
 
-const lang = 'en';
+const lang = "en";
 const t = (key: string) => getTranslation(lang, key);
 ---
 
 <BaseLayout title="SPS - Home" lang={lang}>
-  <HeroInteractivo 
-    title={t('hero.title')}
-    subtitle={t('hero.subtitle')}
-    ctaText={t('hero.cta')}
-    ctaLink={`/${lang}/${t('nav.services_url')}`}
+  <Hero />
+  <SobreNosotros />
+  <HeroInteractivo
+    title={t("hero.title")}
+    subtitle={t("hero.subtitle")}
+    ctaText={t("hero.cta")}
+    ctaLink={`/${lang}/${t("nav.services_url")}`}
   />
-
-  <section class="services-preview">
-    <h2>Our Featured Services</h2>
-    <div class="grid">
-      <CardServicio 
-        title="Web Development" 
-        description="Modern, fast, and scalable websites using the best technologies."
-        icon="💻"
-      />
-      <CardServicio 
-        title="UI/UX Design" 
-        description="Intuitive user interfaces focused on the best experience."
-        icon="🎨"
-      />
-    </div>
-  </section>
+  <PorQueElegirnos />
+  <Estadisticas />
+  <Clientes />
+  <BlogPreview />
+  <Ubicacion />
 </BaseLayout>
-
-<style>
-  .services-preview {
-    max-width: 1200px;
-    margin: 4rem auto;
-    padding: 0 2rem;
-  }
-  h2 {
-    text-align: center;
-    margin-bottom: 3rem;
-    color: var(--color-primary);
-  }
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-  }
-</style>
