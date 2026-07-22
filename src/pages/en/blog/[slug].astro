@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export function getStaticPaths() {
+  // These would be fetched from Sanity for english posts
+  return [
+    { params: { slug: 'my-first-post' } },
+    { params: { slug: 'how-to-grow-online' } }
+  ];
+}
+
+const { slug } = Astro.params;
+const lang = 'en';
+---
+
+<BaseLayout title={`Blog: ${slug}`} lang={lang}>
+  <article class="blog-post">
+    <h1>Article: {slug}</h1>
+    <p>This is the dynamically generated content for the slug <strong>{slug}</strong>.</p>
+  </article>
+</BaseLayout>
+
+<style>
+  .blog-post {
+    max-width: 800px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+  }
+</style>

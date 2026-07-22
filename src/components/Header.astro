@@ -1,0 +1,105 @@
+---
+// src/components/Header.astro
+import { getSiteSettings } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+const settings = await getSiteSettings();
+const logoUrl = settings?.logo ? urlFor(settings.logo)?.url() : null;
+const siteTitle = settings?.siteTitle || 'SPS';
+---
+
+<header
+  class="bg-white border-b-4 border-sps-blue py-4 shadow-sm sticky top-0 z-50"
+>
+  <div
+    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center"
+  >
+    <!-- Logo SPS (Sanity o Texto Fallback) -->
+    <a href="/" class="flex items-center gap-2">
+      {logoUrl ? (
+        <img src={logoUrl} alt={siteTitle} class="h-10 w-auto object-contain" />
+      ) : (
+        <div class="text-3xl font-extrabold text-sps-blue tracking-tighter">
+          {siteTitle}
+        </div>
+      )}
+    </a>
+
+    <!-- Navegación Desktop -->
+    <nav class="hidden md:flex items-center gap-8">
+      <a
+        href="/nosotros"
+        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        >Sobre Nosotros</a
+      >
+      <a
+        href="/servicios"
+        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        >Servicios</a
+      >
+      <a
+        href="/blog"
+        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        >Blog</a
+      >
+      <a
+        href="/contacto"
+        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        >Contacto</a
+      >
+    </nav>
+
+    <!-- Botones y Banderas Desktop -->
+    <div class="hidden md:flex items-center gap-6">
+      <!-- Selector de Idioma -->
+      <div class="flex items-center gap-3 border-r-2 border-gray-200 pr-6">
+        <a
+          href="/es"
+          title="Español (Venezuela)"
+          class="hover:scale-110 transition-transform"
+        >
+          <img
+            src="https://flagcdn.com/w20/ve.png"
+            alt="Bandera Venezuela"
+            class="w-6 h-auto rounded-sm shadow-sm"
+          />
+        </a>
+        <a
+          href="/en"
+          title="English (USA)"
+          class="hover:scale-110 transition-transform opacity-50 hover:opacity-100"
+        >
+          <img
+            src="https://flagcdn.com/w20/us.png"
+            alt="Bandera USA"
+            class="w-6 h-auto rounded-sm shadow-sm"
+          />
+        </a>
+      </div>
+
+      <!-- Botón Call to Action -->
+      <a
+        href="/contacto"
+        class="bg-sps-blue text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-sps-navy transition-all shadow-md"
+      >
+        Solicitar evaluación
+      </a>
+    </div>
+
+    <!-- Botón Menú Hamburguesa (Móvil) -->
+    <button class="md:hidden text-sps-blue p-2" aria-label="Menú principal">
+      <svg
+        class="w-6 h-6"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M4 6h16M4 12h16M4 18h16"></path>
+      </svg>
+    </button>
+  </div>
+</header>

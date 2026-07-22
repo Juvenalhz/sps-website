@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap');
+@import "tailwindcss";
+
+/* Familia 'Now' */
+@font-face {
+  font-family: 'Now';
+  src: url('/fonts/Now-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Now';
+  src: url('/fonts/Now-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Now';
+  src: url('/fonts/Now-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Now';
+  src: url('/fonts/Now-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Now';
+  src: url('/fonts/Now-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Now';
+  src: url('/fonts/Now-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Familia 'NowAlt' */
+@font-face {
+  font-family: 'NowAlt';
+  src: url('/fonts/NowAlt-Thin.otf') format('opentype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NowAlt';
+  src: url('/fonts/NowAlt-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NowAlt';
+  src: url('/fonts/NowAlt-Regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NowAlt';
+  src: url('/fonts/NowAlt-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NowAlt';
+  src: url('/fonts/NowAlt-Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'NowAlt';
+  src: url('/fonts/NowAlt-Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 2. PALETA Y TIPOGRAFÍAS PARA TAILWIND V4 */
+@theme {
+  --color-sps-navy: #062653;
+  --color-sps-blue: #0d4ea4;
+  --color-sps-light-blue: #e0ebf1;
+  --color-sps-grey: #c8c9cb;
+  --color-sps-yellow: #fad201;
+
+  --font-now: 'Now', sans-serif;
+  --font-now-alt: 'NowAlt', sans-serif;
+  --font-bebas: 'Bebas Neue', sans-serif;
+  --font-oswald: 'Oswald', sans-serif;
+}
+
+/* 3. VARIABLES Y TIPOGRAFÍA BASE */
+:root {
+  --color-background: #ffffff;
+  --color-text: #062653;
+  /* 'Now' como tipografía geométrica principal de alta legibilidad */
+  --font-base: 'Now', system-ui, sans-serif;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+}

@@ -1,0 +1,159 @@
+---
+// src/components/Footer.astro
+import { getSiteSettings } from '../lib/queries';
+
+const settings = await getSiteSettings();
+
+const phone = settings?.contactPhone || '(0212) 952.52.42';
+const email = settings?.contactEmail || 'sps@spsrisk.com';
+const address = settings?.address || 'Av. Francisco de Miranda, Edif. EASO, Piso 3, Ofc. 3JK, El Rosal, Caracas.';
+const instagram = settings?.instagramUrl || '#';
+const facebook = settings?.facebookUrl || '#';
+const linkedin = settings?.linkedinUrl || '#';
+---
+
+<footer class="bg-sps-navy text-white pt-16 pb-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Grid de 4 Columnas -->
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-16 items-start"
+    >
+      <!-- Columna 1: Menú -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-6 tracking-wide">Menú</h3>
+        <ul class="space-y-3 text-sm text-gray-300">
+          <li>
+            <a href="/" class="hover:text-sps-yellow transition-colors"
+              >Inicio</a>
+          </li>
+          <li>
+            <a href="/nosotros" class="hover:text-sps-yellow transition-colors"
+              >Nosotros</a>
+          </li>
+          <li>
+            <a href="/servicios" class="hover:text-sps-yellow transition-colors"
+              >Servicios</a>
+          </li>
+          <li>
+            <a href="/blog" class="hover:text-sps-yellow transition-colors"
+              >Blog</a>
+          </li>
+          <li>
+            <a href="/contacto" class="hover:text-sps-yellow transition-colors"
+              >Contacto</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Columna 2: Contáctanos (Sanity + Fallbacks) -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-6 tracking-wide">
+          Contáctanos
+        </h3>
+        <ul class="space-y-2 text-sm text-gray-300 mb-6">
+          <li>{phone}</li>
+          <li>
+            <a
+              href={`mailto:${email}`}
+              class="hover:text-sps-yellow transition-colors"
+              >{email}</a>
+          </li>
+        </ul>
+        <div class="text-sm text-gray-300 leading-relaxed whitespace-pre-line">
+          <p>{address}</p>
+        </div>
+      </div>
+
+      <!-- Columna 3: Servicios -->
+      <div>
+        <h3 class="text-white font-bold text-lg mb-6 tracking-wide">
+          Servicios
+        </h3>
+        <ul class="space-y-3 text-sm text-gray-300">
+          <li>
+            <a
+              href="/servicios#instalaciones"
+              class="hover:text-sps-yellow transition-colors"
+              >Protección de instalaciones</a>
+          </li>
+          <li>
+            <a
+              href="/servicios#ejecutiva"
+              class="hover:text-sps-yellow transition-colors"
+              >Protección ejecutiva</a>
+          </li>
+          <li>
+            <a
+              href="/servicios#electronica"
+              class="hover:text-sps-yellow transition-colors"
+              >Seguridad electrónica</a>
+          </li>
+          <li>
+            <a
+              href="/servicios#industrial"
+              class="hover:text-sps-yellow transition-colors"
+              >Seguridad Industrial</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Columna 4: Escudo SPS Risk -->
+      <div class="flex justify-lg-end items-center">
+        <div class="w-full max-w-[240px]">
+          <img
+            src="/images/logo-sps-risk.png"
+            alt="SPS Risk Vigilancia"
+            class="w-full h-auto object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+          />
+          <div
+            class="hidden border-2 border-dashed border-white/30 p-6 rounded-xl text-center text-xs text-gray-400"
+          >
+            [Escudo SPS Risk]
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sección Inferior: Copyright y Redes Sociales -->
+    <div
+      class="border-t border-white/10 pt-8 flex flex-col items-center justify-center text-center gap-6"
+    >
+      <!-- Redes Sociales -->
+      <div class="flex gap-4">
+        <!-- Instagram -->
+        <a
+          href={instagram}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-10 h-10 rounded-full border border-sps-yellow text-sps-yellow flex items-center justify-center hover:bg-sps-yellow hover:text-sps-navy transition-all font-bold text-sm"
+        >
+          IG
+        </a>
+        <!-- Facebook -->
+        <a
+          href={facebook}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-10 h-10 rounded-full border border-sps-yellow text-sps-yellow flex items-center justify-center hover:bg-sps-yellow hover:text-sps-navy transition-all font-bold text-sm"
+        >
+          FB
+        </a>
+        <!-- LinkedIn -->
+        <a
+          href={linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-10 h-10 rounded-full border border-sps-yellow text-sps-yellow flex items-center justify-center hover:bg-sps-yellow hover:text-sps-navy transition-all font-bold text-sm"
+        >
+          IN
+        </a>
+      </div>
+
+      <!-- Texto de Copyright -->
+      <p class="text-xs text-gray-400">
+        Copyright &copy; 2026 SPS Risk. Todos los derechos reservados.
+      </p>
+    </div>
+  </div>
+</footer>

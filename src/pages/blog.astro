@@ -1,0 +1,76 @@
+---
+// src/pages/blog.astro
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+// Traer TODOS los artículos del blog sin límite restringido desde Sanity
+const sanityPosts = await getPosts(100);
+
+const posts = (sanityPosts && sanityPosts.length > 0)
+  ? sanityPosts.map((p: any) => ({
+      _id: p._id,
+      title: p.title,
+      slug: p.slug?.current || '#',
+      excerpt: p.excerpt || 'Sin resumen disponible.',
+      author: p.author || 'Equipo SPS Risk',
+      publishedAt: p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Reciente',
+      imageUrl: p.mainImage ? urlFor(p.mainImage)?.width(800).height(500).url() : 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
+    }))
+  : [];
+---
+
+<BaseLayout title="Blog y Análisis de Seguridad - SPS Risk">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    
+    <!-- Encabezado Principal del Blog -->
+    <div class="text-center max-w-3xl mx-auto mb-16">
+      <span class="text-xs font-bold text-sps-blue uppercase tracking-widest bg-sps-light-blue px-4 py-1.5 rounded-full inline-block mb-4">
+        Insights y Análisis
+      </span>
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-sps-navy tracking-tight mb-6">
+        Blog de Seguridad Hoy
+      </h1>
+      <p class="text-lg text-gray-600 font-light leading-relaxed">
+        Explora todos nuestros artículos, análisis de riesgos corporativos e informes de tendencias tecnológicas.
+      </p>
+    </div>
+
+    {posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {posts.map((post: any) => (
+          <a href={`/es/blog/${post.slug}`} class="group block cursor-pointer bg-white rounded-2xl overflow-hidden border border-gray-100 shadow-md hover:shadow-xl transition-all transform hover:-translate-y-1 flex flex-col">
+            <div class="w-full h-52 overflow-hidden bg-gray-100 relative">
+              <img 
+                src={post.imageUrl} 
+                alt={post.title} 
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+              />
+            </div>
+            <div class="p-6 flex flex-col flex-grow">
+              <div class="text-xs font-semibold text-gray-400 mb-2">
+                {post.publishedAt} &bull; {post.author}
+              </div>
+              <h2 class="text-xl font-bold text-sps-navy group-hover:text-sps-blue transition-colors mb-3 leading-snug">
+                {post.title}
+              </h2>
+              <p class="text-gray-500 text-sm leading-relaxed mb-6 line-clamp-3 flex-grow">
+                {post.excerpt}
+              </p>
+              <span class="inline-flex items-center gap-2 text-sm font-bold text-sps-blue group-hover:text-sps-navy transition-colors mt-auto">
+                Leer artículo &rarr;
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16 bg-gray-50 rounded-3xl border border-gray-200 max-w-xl mx-auto">
+        <p class="text-gray-500 text-base mb-4">No hay publicaciones de blog disponibles en este momento.</p>
+        <a href="/" class="text-sps-blue font-bold text-sm hover:underline">&larr; Volver al inicio</a>
+      </div>
+    )}
+
+  </div>
+</BaseLayout>

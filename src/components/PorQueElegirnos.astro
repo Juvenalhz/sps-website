@@ -1,0 +1,111 @@
+---
+// src/components/PorQueElegirnos.astro
+---
+
+<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
+    
+    <!-- Lado Izquierdo: Imagen del Guardia con efecto de salida (Out of bounds) -->
+    <div class="relative w-full pt-16">
+      <!-- Caja de fondo gris con bordes redondeados (imitando el diseño original) -->
+      <div class="bg-gray-300 w-full h-[450px] lg:h-[500px] rounded-[30px] relative mt-10 shadow-inner">
+        
+        <!-- Guardia (Debes guardar un guardia.png transparente en public/images/) -->
+        <!-- La imagen usa "absolute bottom-0" para anclarse a la base del gris, y un height mayor para salirse por arriba -->
+        <img
+          src="/images/guardia.png"
+          alt="Guardia de Seguridad SPS"
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-auto max-h-[125%] object-contain object-bottom z-10"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        
+        <!-- Placeholder en caso de que no haya imagen subida -->
+        <div
+          class="hidden absolute inset-0 flex-col items-center justify-center text-center text-gray-500 p-6 border-2 border-dashed border-gray-400 rounded-[30px] z-0"
+        >
+          <span class="text-3xl mb-2">👤</span>
+          <p class="font-bold">Guardia sin fondo</p>
+          <p class="text-sm">Sube tu PNG como public/images/guardia.png</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lado Derecho: Contenido -->
+    <div>
+      <h2
+        class="text-4xl lg:text-5xl font-oswald font-bold text-sps-blue uppercase mb-12 tracking-tight"
+      >
+        ¿POR QUÉ ELEGIRNOS?
+      </h2>
+      
+      <div class="space-y-8 mb-12">
+        
+        <!-- Item 1: Trayectoria -->
+        <div class="flex gap-5 items-start">
+          <div class="text-sps-blue w-12 h-12 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18 9 11.25l4.306 4.306a11.95 11.95 0 0 1 5.814-5.518l2.74-1.22" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl text-gray-700 mb-1">Sólida trayectoria:</h3>
+            <p class="text-gray-500 text-[16px]">Más de <span class="font-bold text-gray-700">20 años</span> de operación ininterrumpida.</p>
+          </div>
+        </div>
+
+        <!-- Item 2: Enfoque -->
+        <div class="flex gap-5 items-start">
+          <div class="text-sps-blue w-12 h-12 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <circle cx="12" cy="12" r="10" />
+              <circle cx="12" cy="12" r="6" />
+              <circle cx="12" cy="12" r="2" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M20.5 3.5l-6 6" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl text-gray-700 mb-1">Enfoque estratégico:</h3>
+            <p class="text-gray-500 text-[16px]"><span class="font-bold text-gray-700">Seguridad</span> como un todo, no piezas aisladas.</p>
+          </div>
+        </div>
+
+        <!-- Item 3: Soluciones -->
+        <div class="flex gap-5 items-start">
+          <div class="text-sps-blue w-12 h-12 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 0 0 1.5-.189m-1.5.189a6.01 6.01 0 0 1-1.5-.189m3.75 7.478a12.06 12.06 0 0 1-4.5 0m3.75 2.383a14.406 14.406 0 0 1-3 0M14.25 18v-.192c0-.983.658-1.829 1.508-2.316a7.5 7.5 0 1 0-7.516 0c.85.487 1.508 1.333 1.508 2.316v.192" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl text-gray-700 mb-1">Soluciones personalizadas:</h3>
+            <p class="text-gray-500 text-[16px]">Evaluamos los riesgos de tu empresa con nuestros <span class="font-bold text-gray-700">expertos.</span></p>
+          </div>
+        </div>
+
+        <!-- Item 4: Estándares -->
+        <div class="flex gap-5 items-start">
+          <div class="text-sps-blue w-12 h-12 shrink-0">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 0 1 7.843 4.582M12 3a8.997 8.997 0 0 0-7.843 4.582m15.686 0A11.953 11.953 0 0 1 12 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0 1 21 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0 1 12 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 0 1 3 12c0-1.605.42-3.113 1.157-4.418" />
+            </svg>
+          </div>
+          <div>
+            <h3 class="font-bold text-xl text-gray-700 mb-1">Estándares internacionales:</h3>
+            <p class="text-gray-500 text-[16px]">No lo decimos nosotros, sino entes certificadores.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Botón -->
+      <a
+        href="/nosotros"
+        class="inline-block px-8 py-2 rounded-full border border-gray-500 text-gray-500 hover:bg-gray-100 hover:text-gray-800 transition-colors text-[13px] font-medium"
+      >
+        Más información
+      </a>
+    </div>
+    
+  </div>
+</section>

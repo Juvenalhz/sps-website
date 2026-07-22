@@ -1,0 +1,167 @@
+---
+// src/components/Estadisticas.astro
+---
+
+<section class="w-full">
+  <!-- Franja Azul con Estadísticas y Animación -->
+  <!-- Usamos un gradiente desde un azul más vivo hasta el azul marino oscuro de la marca -->
+  <div
+    class="w-full bg-gradient-to-r from-blue-600 to-[#041530] text-white py-16"
+  >
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Grid de 3 columnas divididas por líneas finas translúcidas -->
+      <div
+        class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-white/20 text-center"
+      >
+        <!-- Stat 1 -->
+        <div class="py-6 md:py-2 px-4">
+          <div
+            class="text-5xl sm:text-6xl lg:text-7xl font-light text-sps-yellow mb-2 tracking-tight leading-none"
+          >
+            +<span class="counter" data-target="20">0</span>
+          </div>
+          <p
+            class="text-sm sm:text-base lg:text-lg font-light text-white/90 tracking-wide"
+          >
+            años de experiencia
+          </p>
+        </div>
+
+        <!-- Stat 2 -->
+        <div class="py-6 md:py-2 px-4">
+          <div
+            class="text-5xl sm:text-6xl lg:text-7xl font-light text-sps-yellow mb-2 tracking-tight leading-none"
+          >
+            +<span class="counter" data-target="520">0</span>
+          </div>
+          <p
+            class="text-sm sm:text-base lg:text-lg font-light text-white/90 tracking-wide"
+          >
+            trabajadores en todo el país
+          </p>
+        </div>
+
+        <!-- Stat 3 -->
+        <div class="py-6 md:py-2 px-4">
+          <div
+            class="text-5xl sm:text-6xl lg:text-7xl font-light text-sps-yellow mb-2 tracking-tight leading-none"
+          >
+            +<span class="counter" data-target="200">0</span>
+          </div>
+          <p
+            class="text-sm sm:text-base lg:text-lg font-light text-white/90 tracking-wide"
+          >
+            clientes en nuestra trayectoria
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de Certificaciones (Parte blanca inferior) -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+    <!-- Divisor con texto en el medio -->
+    <div class="flex items-center justify-center mb-16">
+      <div class="flex-grow max-w-sm border-t border-gray-200"></div>
+      <span
+        class="flex-shrink-0 mx-6 text-gray-400 text-xl font-light tracking-wide"
+        >Certificaciones</span
+      >
+      <div class="flex-grow max-w-sm border-t border-gray-200"></div>
+    </div>
+
+    <!-- Contenedor de Logos de Certificaciones -->
+    <div
+      class="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-32"
+    >
+      <!-- FONDONORMA -->
+      <div class="flex flex-col items-center">
+        <img
+          src="/images/fondonorma.png"
+          alt="Certificación FONDONORMA"
+          class="h-32 lg:h-40 object-contain"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <div
+          class="hidden border-2 border-dashed border-gray-300 w-48 h-32 items-center justify-center text-center text-gray-500 rounded text-sm bg-gray-50"
+        >
+          Sube tu PNG como<br />public/images/fondonorma.png
+        </div>
+      </div>
+
+      <!-- ISO 9001:2015 -->
+      <div class="flex flex-col items-center">
+        <img
+          src="/images/iso.png"
+          alt="Certificación ISO 9001:2015"
+          class="h-32 lg:h-40 object-contain"
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+        />
+        <div
+          class="hidden border-2 border-dashed border-gray-300 w-48 h-32 items-center justify-center text-center text-gray-500 rounded text-sm bg-gray-50"
+        >
+          Sube tu PNG como<br />public/images/iso.png
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 
+  Astro aísla este script automáticamente. 
+  Usamos IntersectionObserver para que el conteo inicie cuando el usuario vea la sección.
+-->
+<script>
+  // @ts-nocheck
+  function initCounters() {
+    const counters = document.querySelectorAll(".counter");
+    if (!counters.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const counter = entry.target;
+            const target = +counter.getAttribute("data-target");
+            const duration = 2000; // 2 segundos de animación
+            let startTimestamp = null;
+
+            const step = (timestamp) => {
+              if (!startTimestamp) startTimestamp = timestamp;
+              const progress = Math.min(
+                (timestamp - startTimestamp) / duration,
+                1,
+              );
+
+              // Curva de aceleración (easing out)
+              const easeProgress =
+                progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+
+              counter.innerHTML = Math.floor(easeProgress * target).toString();
+
+              if (progress < 1) {
+                window.requestAnimationFrame(step);
+              } else {
+                counter.innerHTML = target.toString();
+              }
+            };
+
+            window.requestAnimationFrame(step);
+            observer.unobserve(counter);
+          }
+        });
+      },
+      {
+        threshold: 0.15, // Umbral optimizado para móviles y escritorios
+      },
+    );
+
+    counters.forEach((counter) => {
+      observer.observe(counter);
+    });
+  }
+
+  // Iniciar en carga inicial y en navegaciones de Astro
+  initCounters();
+  document.addEventListener("astro:page-load", initCounters);
+</script>

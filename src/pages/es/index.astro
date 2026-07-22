@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import HeroInteractivo from '../../components/HeroInteractivo.astro';
+import CardServicio from '../../components/CardServicio.astro';
+import { getTranslation } from '../../utils/i18n';
+
+const lang = 'es';
+const t = (key: string) => getTranslation(lang, key);
+---
+
+<BaseLayout title="SPS - Inicio" lang={lang}>
+  <HeroInteractivo 
+    title={t('hero.title')}
+    subtitle={t('hero.subtitle')}
+    ctaText={t('hero.cta')}
+    ctaLink={`/${lang}/${t('nav.services_url')}`}
+  />
+
+  <section class="services-preview">
+    <h2>Nuestros Servicios Destacados</h2>
+    <div class="grid">
+      <CardServicio 
+        title="Desarrollo Web" 
+        description="Sitios web modernos, rápidos y escalables utilizando las mejores tecnologías."
+        icon="💻"
+      />
+      <CardServicio 
+        title="Diseño UI/UX" 
+        description="Interfaces de usuario intuitivas y centradas en la mejor experiencia."
+        icon="🎨"
+      />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .services-preview {
+    max-width: 1200px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+  }
+  h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: var(--color-primary);
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+  }
+</style>

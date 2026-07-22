@@ -1,0 +1,78 @@
+---
+// src/components/Hero.astro
+---
+
+<section
+    class="relative w-full h-[85vh] bg-sps-navy flex items-center overflow-hidden"
+>
+    <!-- FONDO: Video Institucional con Overlay Oscuro -->
+    <div class="absolute inset-0 z-0 overflow-hidden">
+        <video
+            autoplay
+            muted
+            loop
+            playsinline
+            class="w-full h-full object-cover"
+        >
+            <!-- Asegúrate de colocar tu video en la carpeta public/videos/ y apuntar aquí -->
+            <source src="/videos/hero-monitoreo.mp4" type="video/mp4" />
+            Tu navegador no soporta videos HTML5.
+        </video>
+
+        <!-- Capa de oscurecimiento (Overlay) para garantizar la legibilidad del texto -->
+        <div class="absolute inset-0 bg-sps-navy/70 z-10"></div>
+    </div>
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="max-w-5xl lg:w-3/4">
+            <!-- Título principal -->
+            <h1
+                class="text-4xl sm:text-5xl lg:text-5xl font-oswald font-normal text-white tracking-tight leading-none mb-5 uppercase drop-shadow-lg"
+            >
+                SOLUCIONES INTEGRALES DE <br class="hidden sm:block" />
+                SEGURIDAD Y GESTIÓN DE RIESGOS
+            </h1>
+
+            <!-- Subtítulo con barra lateral amarilla -->
+            <div class="border-l-[3px] border-sps-yellow pl-5 mb-8">
+                <p
+                    class="text-base sm:text-[19px] text-white font-bold leading-snug drop-shadow-md"
+                >
+                    Protegemos personas, activos y operaciones <br
+                        class="hidden sm:block"
+                    />
+                    con estándares internacionales.
+                </p>
+            </div>
+
+            <!-- Botón de Acción -->
+            <a
+                href="/contacto"
+                class="inline-flex items-center gap-3 group mt-2"
+            >
+                <div
+                    class="w-8 h-8 bg-sps-yellow text-sps-navy flex items-center justify-center transition-transform group-hover:scale-105"
+                >
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        class="w-5 h-5"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3"></path>
+                    </svg>
+                </div>
+                <span
+                    class="text-gray-300 text-[15px] font-normal group-hover:text-white transition-colors"
+                    >Solicitar evaluación</span
+                >
+            </a>
+        </div>
+    </div>
+</section>

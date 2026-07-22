@@ -1,0 +1,101 @@
+---
+// src/pages/es/blog/[slug].astro
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getAllPostSlugs, getPostBySlug } from '../../../lib/queries';
+import { urlFor } from '../../../lib/sanity';
+import { toHTML } from '@portabletext/to-html';
+
+export async function getStaticPaths() {
+  const slugs = await getAllPostSlugs();
+  
+  // Fallbacks estáticos si no hay posts en Sanity aún
+  if (!slugs.length) {
+    return [
+      { params: { slug: 'analisis-de-riesgos-corporativos' } },
+      { params: { slug: 'tendencias-en-videovigilancia' } }
+    ];
+  }
+
+  return slugs.map((slug: any) => ({
+    params: { slug }
+  }));
+}
+
+const { slug } = Astro.params;
+const post = await getPostBySlug(slug);
+
+// Formatear HTML del cuerpo de Sanity (PortableText) o mostrar fallback
+const bodyHtml = post?.body ? toHTML(post.body) : null;
+const imageUrl = post?.mainImage ? urlFor(post.mainImage)?.width(1200).height(630).url() : 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200';
+const title = post?.title || `Artículo: ${slug}`;
+const excerpt = post?.excerpt || 'Análisis detallado sobre seguridad corporativa y protección estratégica.';
+const publishedAt = post?.publishedAt ? new Date(post.publishedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Reciente';
+const author = post?.author || 'Equipo SPS Risk';
+---
+
+<BaseLayout title={title} lang="es">
+  <article class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
+    
+    <!-- Enlace de regreso -->
+    <a href="/es" class="inline-flex items-center gap-2 text-sps-blue hover:text-sps-navy font-medium text-sm mb-8 transition-colors">
+      &larr; Volver al Inicio
+    </a>
+
+    <!-- Encabezado del Artículo -->
+    <header class="mb-12">
+      <div class="flex items-center gap-4 text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
+        <span>{publishedAt}</span>
+        <span>&bull;</span>
+        <span>Por {author}</span>
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-sps-navy mb-6 leading-tight">
+        {title}
+      </h1>
+
+      <p class="text-lg sm:text-xl text-gray-600 font-light leading-relaxed border-l-4 border-sps-blue pl-4">
+        {excerpt}
+      </p>
+    </header>
+
+    <!-- Imagen Principal -->
+    <div class="w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-2xl overflow-hidden mb-12 shadow-xl bg-gray-100">
+      <img 
+        src={imageUrl} 
+        alt={title} 
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    <!-- Cuerpo del Artículo (PortableText o Fallback) -->
+    <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed font-normal">
+      {bodyHtml ? (
+        <div set:html={bodyHtml} />
+      ) : (
+        <div class="space-y-6">
+          <p>
+            En un entorno corporativo cambiante, la protección estratégica de activos, instalaciones y capital humano se ha convertido en una prioridad indispensable para garantizar la continuidad operativa de las empresas.
+          </p>
+          <p>
+            Mediante la integración de protocolos de monitoreo inteligente, análisis de vulnerabilidades y personal especializado en gestión de riesgos, las organizaciones pueden anticiparse a cualquier incidente y mitigar amenazas antes de que afecten la productividad.
+          </p>
+          <p>
+            Contacta a nuestros consultores en <strong>SPS Risk</strong> para obtener un diagnóstico personalizado según el perfil operativo de tu empresa.
+          </p>
+        </div>
+      )}
+    </div>
+
+    <!-- CTA Inferior -->
+    <div class="mt-16 p-8 bg-sps-light-blue rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div>
+        <h3 class="text-xl font-bold text-sps-navy mb-2">¿Necesitas asesoría en seguridad corporativa?</h3>
+        <p class="text-sm text-gray-600">Nuestros analistas están listos para evaluar tus requerimientos.</p>
+      </div>
+      <a href="/contacto" class="px-6 py-3 bg-sps-blue hover:bg-sps-navy text-white rounded-full font-bold text-sm transition-colors whitespace-nowrap shadow-md">
+        Contactar consultor
+      </a>
+    </div>
+
+  </article>
+</BaseLayout>
