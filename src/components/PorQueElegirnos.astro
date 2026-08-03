@@ -12,26 +12,22 @@ const whyUsImageUrl = homeData?.whyUsImage
 <section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 lg:py-24">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 items-center">
     
-    <!-- Lado Izquierdo: Imagen del Guardia con efecto de salida (Out of bounds) -->
-    <div class="relative w-full pt-16">
-      <!-- Caja de fondo gris con bordes redondeados -->
-      <div class="bg-gray-300 w-full h-[450px] lg:h-[500px] rounded-[30px] relative mt-10 shadow-inner">
-        
-        <img
-          src={whyUsImageUrl}
-          alt="Guardia de Seguridad SPS"
-          class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-auto max-h-[125%] object-contain object-bottom z-10"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        />
-        
-        <!-- Placeholder en caso de que no haya imagen subida -->
-        <div
-          class="hidden absolute inset-0 flex-col items-center justify-center text-center text-gray-300 p-6 border-2 border-dashed border-gray-300 rounded-[30px] z-0"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-          </svg>
-        </div>
+    <!-- Lado Izquierdo: Imagen del Guardia -->
+    <div class="relative w-full flex justify-center items-center">
+      <img
+        src={whyUsImageUrl}
+        alt="Guardia de Seguridad SPS"
+        class="w-full max-w-md lg:max-w-lg h-auto object-contain drop-shadow-xl"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+      />
+      
+      <!-- Placeholder en caso de que no haya imagen subida -->
+      <div
+        class="hidden w-full h-[450px] flex-col items-center justify-center text-center text-gray-300 p-6 border-2 border-dashed border-gray-300 rounded-[30px]"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+        </svg>
       </div>
     </div>
 
