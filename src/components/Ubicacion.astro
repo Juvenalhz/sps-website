@@ -1,0 +1,255 @@
+---
+// src/components/Ubicacion.astro
+import { getHomePage } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+const homeData = await getHomePage();
+const mapImageUrl = homeData?.mapImage
+  ? urlFor(homeData.mapImage)?.url()
+  : '/images/mapa-venezuela.png';
+
+// Sedes por defecto en Venezuela
+const defaultBranches = [
+  {
+    id: 'zulia',
+    name: 'Sede Zulia (Maracaibo)',
+    address: 'Av. Bella Vista, Centro Comercial Costa Verde, Piso 2, Maracaibo.',
+    phone: '(0261) 700.00.00 / (0424) 000.00.00',
+    topPercent: 18,
+    leftPercent: 10
+  },
+  {
+    id: 'carabobo',
+    name: 'Sede Carabobo (Valencia)',
+    address: 'Av. Bolívar Norte, Centro Comercial Camoruco, Valencia.',
+    phone: '(0241) 800.00.00 / (0414) 000.00.00',
+    topPercent: 24,
+    leftPercent: 45
+  },
+  {
+    id: 'caracas',
+    name: 'Sede Principal (Caracas)',
+    address: 'Av. Francisco de Miranda, Edif. EASO, Piso 3, Ofc. 3JK, El Rosal, Caracas.',
+    phone: '(0212) 952.52.42 / (0424) 000.00.00',
+    topPercent: 21,
+    leftPercent: 54
+  },
+  {
+    id: 'anzoategui',
+    name: 'Sede Anzoátegui (Pto. La Cruz)',
+    address: 'Av. Intercomunal, C.C. Las Garzas, Lechería - Pto. La Cruz.',
+    phone: '(0281) 600.00.00 / (0412) 000.00.00',
+    topPercent: 26,
+    leftPercent: 67
+  },
+  {
+    id: 'maturin',
+    name: 'Sede Maturín',
+    address: 'Av. Alirio Ugarte Pelayo, Centro Comercial Servimas, Maturín, Monagas.',
+    phone: '(0291) 640.00.00 / (0424) 000.00.00',
+    topPercent: 28,
+    leftPercent: 76
+  }
+];
+
+const branches = homeData?.branches && homeData.branches.length > 0
+  ? homeData.branches.map((b: any, index: number) => ({
+      id: `branch-${index}`,
+      name: b.name || 'Sede SPS',
+      address: b.address || 'Contacto disponible',
+      phone: b.phone || '(0212) 952.52.42',
+      topPercent: b.coordinates?.topPercent ?? b.topPercent ?? 30,
+      leftPercent: b.coordinates?.leftPercent ?? b.leftPercent ?? 50
+    }))
+  : defaultBranches;
+---
+
+<section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 lg:py-24 overflow-hidden">
+  
+  <div class="relative w-full flex flex-col lg:block">
+    
+    <!-- Encabezado / Título de la Sección -->
+    <div class="mb-12 lg:mb-16 max-w-2xl">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sps-blue/10 border border-sps-blue/20 text-sps-blue text-xs font-semibold uppercase tracking-wider mb-4">
+        <svg class="w-4 h-4 text-sps-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        Presencia Nacional
+      </div>
+      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-sps-blue tracking-tight leading-none mb-4">
+        UBICACIÓN
+      </h2>
+      <p class="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+        Contamos con sedes estratégicas y capacidad de respuesta táctica inmediata en los puntos clave de Venezuela. Haz clic sobre una sede para ver los detalles.
+      </p>
+    </div>
+
+    <!-- Contenedor del Mapa e Interacción -->
+    <div class="relative w-full inline-block rounded-3xl bg-slate-50/50 p-4 sm:p-8 border border-slate-100">
+      
+      <!-- Imagen del Mapa 3D de Venezuela -->
+      <div class="relative w-full max-w-5xl mx-auto">
+        <img
+          src={mapImageUrl}
+          alt="Mapa 3D de Venezuela - SPS Risk Vigilancia"
+          class="w-full h-auto object-contain drop-shadow-xl select-none pointer-events-none"
+        />
+
+        <!-- Pines de las Sedes sobre el Mapa -->
+        {branches.map((branch: any) => (
+          <div
+            class="absolute z-20 transform -translate-x-1/2 -translate-y-1/2"
+            style={`top: ${branch.topPercent}%; left: ${branch.leftPercent}%;`}
+          >
+            <!-- Botón del Pin Pulsante -->
+            <button
+              type="button"
+              class="pin-btn relative group cursor-pointer focus:outline-none focus:scale-125 transition-transform"
+              data-pin-id={branch.id}
+              aria-label={`Ver información de ${branch.name}`}
+            >
+              <!-- Onda de Pulso Animada -->
+              <span class="absolute -inset-2 rounded-full bg-sps-yellow/60 animate-ping opacity-75 group-hover:bg-sps-yellow"></span>
+              
+              <!-- Círculo Exterior Dorado -->
+              <span class="relative flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-yellow-300 via-sps-yellow to-amber-500 shadow-lg border-2 border-white group-hover:scale-110 transition-all duration-300">
+                <!-- Punto Interior Azul Marino -->
+                <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-sps-blue shadow-inner"></span>
+              </span>
+
+              <!-- Etiqueta Nombre al hacer Hover -->
+              <span class="absolute left-1/2 -bottom-7 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-sps-blue text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-md whitespace-nowrap pointer-events-none z-30">
+                {branch.name}
+              </span>
+            </button>
+
+            <!-- Tarjeta Modal Flotante (Popup) -->
+            <div
+              id={`card-${branch.id}`}
+              class="branch-card hidden absolute bottom-10 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 w-64 sm:w-72 p-4 sm:p-5 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-100 z-40 transition-all duration-300 text-left"
+            >
+              <!-- Header de la Tarjeta con Cierre -->
+              <div class="flex items-start justify-between gap-2 mb-3 pb-2 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                  <span class="w-2.5 h-2.5 rounded-full bg-sps-yellow"></span>
+                  <h3 class="font-bold text-sps-blue text-sm sm:text-base leading-snug">
+                    {branch.name}
+                  </h3>
+                </div>
+                <button
+                  type="button"
+                  class="close-card-btn text-slate-400 hover:text-sps-blue p-1 transition-colors"
+                  data-close-id={branch.id}
+                  aria-label="Cerrar detalles"
+                >
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                  </svg>
+                </button>
+              </div>
+
+              <!-- Dirección -->
+              <div class="mb-3 space-y-1">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Dirección</p>
+                <p class="text-xs sm:text-sm text-slate-600 font-medium leading-normal">
+                  {branch.address}
+                </p>
+              </div>
+
+              <!-- Teléfono -->
+              <div class="mb-4 space-y-1">
+                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Teléfono de Contacto</p>
+                <p class="text-xs sm:text-sm text-sps-blue font-bold tracking-wide">
+                  {branch.phone}
+                </p>
+              </div>
+
+              <!-- Botón Contactar Sede -->
+              <a
+                href={`/contacto?sede=${encodeURIComponent(branch.name)}`}
+                class="inline-flex items-center justify-center w-full py-2 px-3 rounded-xl bg-sps-blue text-white text-xs font-bold hover:bg-sps-blue/90 transition-colors shadow-sm gap-1.5"
+              >
+                <span>Contactar con esta Sede</span>
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <!-- Pie del Mapa / CTA -->
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white shadow-sm border border-slate-100">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-sps-yellow/10 flex items-center justify-center text-sps-yellow shrink-0">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+            </svg>
+          </div>
+          <div>
+            <p class="text-xs sm:text-sm font-bold text-sps-blue">¿Necesitas cobertura en otra región?</p>
+            <p class="text-xs text-slate-500">Desplegamos operativos de seguridad ejecutiva y vigilancia en todo el territorio nacional.</p>
+          </div>
+        </div>
+        <a
+          href="/contacto"
+          class="w-full sm:w-auto text-center px-5 py-2.5 rounded-xl bg-sps-yellow text-sps-blue text-xs sm:text-sm font-bold hover:bg-sps-yellow/90 transition-colors shadow-sm shrink-0"
+        >
+          Solicitar evaluación
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+<script>
+  function setupMapPins() {
+    const pinBtns = document.querySelectorAll('.pin-btn');
+    const closeBtns = document.querySelectorAll('.close-card-btn');
+
+    function closeAllCards() {
+      document.querySelectorAll('.branch-card').forEach((card) => {
+        card.classList.add('hidden');
+      });
+    }
+
+    pinBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const pinId = btn.getAttribute('data-pin-id');
+        const targetCard = document.getElementById(`card-${pinId}`);
+        
+        const isCurrentlyOpen = !targetCard?.classList.contains('hidden');
+        closeAllCards();
+
+        if (!isCurrentlyOpen && targetCard) {
+          targetCard.classList.remove('hidden');
+        }
+      });
+    });
+
+    closeBtns.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const closeId = btn.getAttribute('data-close-id');
+        const targetCard = document.getElementById(`card-${closeId}`);
+        targetCard?.classList.add('hidden');
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.branch-card') && !target.closest('.pin-btn')) {
+        closeAllCards();
+      }
+    });
+  }
+
+  setupMapPins();
+  document.addEventListener('astro:page-load', setupMapPins);
+</script>
