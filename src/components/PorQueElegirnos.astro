@@ -1,5 +1,12 @@
 ---
 // src/components/PorQueElegirnos.astro
+import { getHomePage } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+const homeData = await getHomePage();
+const whyUsImageUrl = homeData?.whyUsImage
+  ? urlFor(homeData.whyUsImage)?.url()
+  : '/images/guardia.png';
 ---
 
 <section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 lg:py-24">
@@ -7,13 +14,11 @@
     
     <!-- Lado Izquierdo: Imagen del Guardia con efecto de salida (Out of bounds) -->
     <div class="relative w-full pt-16">
-      <!-- Caja de fondo gris con bordes redondeados (imitando el diseño original) -->
+      <!-- Caja de fondo gris con bordes redondeados -->
       <div class="bg-gray-300 w-full h-[450px] lg:h-[500px] rounded-[30px] relative mt-10 shadow-inner">
         
-        <!-- Guardia (Debes guardar un guardia.png transparente en public/images/) -->
-        <!-- La imagen usa "absolute bottom-0" para anclarse a la base del gris, y un height mayor para salirse por arriba -->
         <img
-          src="/images/guardia.png"
+          src={whyUsImageUrl}
           alt="Guardia de Seguridad SPS"
           class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90%] h-auto max-h-[125%] object-contain object-bottom z-10"
           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"

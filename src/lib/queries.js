@@ -27,6 +27,19 @@ export async function getHomePage() {
 }
 
 /**
+ * Obtiene los datos de la página Sobre Nosotros (aboutPage)
+ */
+export async function getAboutPage() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "aboutPage"][0]`);
+    return data || null;
+  } catch (error) {
+    console.error('Error al consultar aboutPage de Sanity:', error);
+    return null;
+  }
+}
+
+/**
  * Obtiene todos los servicios activos
  */
 export async function getServices() {

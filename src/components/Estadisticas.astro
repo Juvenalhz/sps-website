@@ -1,5 +1,21 @@
 ---
 // src/components/Estadisticas.astro
+import { getHomePage } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+const homeData = await getHomePage();
+const sanityCertifications = homeData?.certifications || [];
+const fallbackCertifications = [
+  { name: 'Certificación FONDONORMA', logoUrl: '/images/fondonorma.png' },
+  { name: 'Certificación ISO 9001:2015', logoUrl: '/images/iso.png' }
+];
+
+const certsList = sanityCertifications.length > 0
+  ? sanityCertifications.map(c => ({
+      name: c.name || 'Certificación',
+      logoUrl: c.logo ? urlFor(c.logo)?.url() : null
+    })).filter(c => c.logoUrl)
+  : fallbackCertifications;
 ---
 
 <section class="w-full">
@@ -72,41 +88,25 @@
 
     <!-- Contenedor de Logos de Certificaciones -->
     <div
-      class="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-32"
+      class="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-32 flex-wrap"
     >
-      <!-- FONDONORMA -->
-      <div class="flex flex-col items-center">
-        <img
-          src="/images/fondonorma.png"
-          alt="Certificación FONDONORMA"
-          class="h-32 lg:h-40 object-contain"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        />
-        <div
-          class="hidden border-2 border-dashed border-gray-300 w-48 h-32 items-center justify-center text-center text-gray-300 rounded bg-gray-50"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-          </svg>
+      {certsList.map((cert) => (
+        <div class="flex flex-col items-center">
+          <img
+            src={cert.logoUrl}
+            alt={cert.name}
+            class="h-32 lg:h-40 object-contain"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          />
+          <div
+            class="hidden border-2 border-dashed border-gray-300 w-48 h-32 items-center justify-center text-center text-gray-300 rounded bg-gray-50"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+            </svg>
+          </div>
         </div>
-      </div>
-
-      <!-- ISO 9001:2015 -->
-      <div class="flex flex-col items-center">
-        <img
-          src="/images/iso.png"
-          alt="Certificación ISO 9001:2015"
-          class="h-32 lg:h-40 object-contain"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-        />
-        <div
-          class="hidden border-2 border-dashed border-gray-300 w-48 h-32 items-center justify-center text-center text-gray-300 rounded bg-gray-50"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-          </svg>
-        </div>
-      </div>
+      ))}
     </div>
   </div>
 </section>

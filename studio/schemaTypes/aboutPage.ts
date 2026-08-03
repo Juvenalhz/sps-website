@@ -25,5 +25,14 @@ export const aboutPage = defineType({
       title: 'Descripción del Equipo Directivo',
       type: 'text',
     }),
+    defineField({
+      name: 'mainImage',
+      title: 'Imagen Principal de Nosotros',
+      type: 'image',
+      description: '📸 Foto horizontal del equipo directivo o personal. Tamaño recomendado: 1200 x 800 px (JPG o WebP).',
+      options: {
+        hotspot: true,
+      },
+    }),
   ],
 })

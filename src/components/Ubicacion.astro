@@ -1,5 +1,12 @@
 ---
 // src/components/Ubicacion.astro
+import { getHomePage } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+const homeData = await getHomePage();
+const mapImageUrl = homeData?.mapImage
+  ? urlFor(homeData.mapImage)?.url()
+  : '/images/mapa-venezuela.png';
 ---
 
 <section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 lg:py-24 overflow-hidden">
@@ -7,10 +14,9 @@
   <div class="relative w-full flex flex-col lg:block">
     
     <!-- Imagen del Mapa 3D (Fondo principal) -->
-    <!-- En desktop lo alineamos a la derecha para dejar espacio al texto -->
     <div class="w-full lg:w-4/5 lg:ml-auto relative z-0 mb-8 lg:mb-0">
       <img 
-        src="/images/mapa-venezuela.png" 
+        src={mapImageUrl} 
         alt="Mapa 3D de sedes en Venezuela" 
         class="w-full h-auto object-contain"
         onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"

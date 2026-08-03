@@ -3,6 +3,17 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Estadisticas from "../components/Estadisticas.astro";
 import Clientes from "../components/Clientes.astro";
+import { getAboutPage, getHomePage } from "../lib/queries";
+import { urlFor } from "../lib/sanity";
+
+const aboutData = await getAboutPage();
+const homeData = await getHomePage();
+
+const mainImageUrl = aboutData?.mainImage
+  ? urlFor(aboutData.mainImage)?.url()
+  : homeData?.aboutImage
+  ? urlFor(homeData.aboutImage)?.url()
+  : '/images/sobre-nosotros.jpg';
 ---
 
 <BaseLayout title="Sobre Nosotros">
@@ -48,14 +59,18 @@ import Clientes from "../components/Clientes.astro";
         </div>
       </div>
 
-      <div class="relative">
-        <div class="w-full h-[420px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-[30px] flex items-center justify-center text-gray-400">
-          <div class="text-center p-6">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a5.97 5.97 0 00-.942 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
-            </svg>
-            <span class="text-sm font-medium text-gray-400">Equipo Directivo & Operativo SPS</span>
-          </div>
+      <div class="relative w-full">
+        <img 
+          src={mainImageUrl} 
+          alt="Equipo Directivo y Operativo SPS" 
+          class="w-full h-[420px] object-cover rounded-[30px] shadow-xl relative z-10" 
+          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" 
+        />
+        <div class="hidden w-full h-[420px] bg-gray-100 border-2 border-dashed border-gray-300 rounded-[30px] flex-col items-center justify-center text-gray-400 p-6 text-center z-0">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-16 h-16 mx-auto text-gray-300 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a5.97 5.97 0 00-.942 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+          </svg>
+          <span class="text-sm font-medium text-gray-400">Equipo Directivo & Operativo SPS</span>
         </div>
       </div>
     </div>
