@@ -64,32 +64,32 @@ const branches = homeData?.branches && homeData.branches.length > 0
   : defaultBranches;
 ---
 
-<section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-20 lg:py-24 overflow-hidden">
+<section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 lg:py-24 overflow-hidden">
   
-  <div class="relative w-full flex flex-col lg:block">
+  <!-- Grid principal de 2 columnas: Texto + Botón a la izquierda / Mapa a la derecha -->
+  <div class="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
     
-    <!-- Encabezado / Título de la Sección -->
-    <div class="mb-12 lg:mb-16 max-w-2xl">
-      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-sps-blue/10 border border-sps-blue/20 text-sps-blue text-xs font-semibold uppercase tracking-wider mb-4">
-        <svg class="w-4 h-4 text-sps-yellow" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-        </svg>
-        Presencia Nacional
-      </div>
-      <h2 class="text-3xl sm:text-4xl lg:text-5xl font-black text-sps-blue tracking-tight leading-none mb-4">
-        UBICACIÓN
+    <!-- Columna Izquierda: Título "ESTAMOS DONDE NOS NECESITES" y Botón "Solicitar evaluación" -->
+    <div class="lg:col-span-5 z-10 lg:pb-12 text-left">
+      <h2 class="font-oswald text-4xl sm:text-5xl lg:text-[54px] font-medium text-[#333333] uppercase tracking-normal leading-[1.05] mb-5">
+        ESTAMOS DONDE<br />NOS NECESITES
       </h2>
-      <p class="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
-        Contamos con sedes estratégicas y capacidad de respuesta táctica inmediata en los puntos clave de Venezuela. Haz clic sobre una sede para ver los detalles.
-      </p>
+
+      <div>
+        <a
+          href="/contacto"
+          class="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-sps-yellow text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md hover:bg-sps-yellow/90 transition-all"
+        >
+          Solicitar evaluación
+        </a>
+      </div>
     </div>
 
-    <!-- Contenedor del Mapa e Interacción -->
-    <div class="relative w-full inline-block rounded-3xl bg-slate-50/50 p-4 sm:p-8 border border-slate-100">
-      
-      <!-- Imagen del Mapa 3D de Venezuela -->
-      <div class="relative w-full max-w-5xl mx-auto">
+    <!-- Columna Derecha: Mapa 3D de Venezuela con Pines Interactivos -->
+    <div class="lg:col-span-7 relative">
+      <div class="relative w-full">
+        
+        <!-- Imagen del Mapa 3D de Venezuela -->
         <img
           src={mapImageUrl}
           alt="Mapa 3D de Venezuela - SPS Risk Vigilancia"
@@ -179,28 +179,6 @@ const branches = homeData?.branches && homeData.branches.length > 0
           </div>
         ))}
       </div>
-
-      <!-- Pie del Mapa / CTA -->
-      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 rounded-2xl bg-white shadow-sm border border-slate-100">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 rounded-xl bg-sps-yellow/10 flex items-center justify-center text-sps-yellow shrink-0">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
-            </svg>
-          </div>
-          <div>
-            <p class="text-xs sm:text-sm font-bold text-sps-blue">¿Necesitas cobertura en otra región?</p>
-            <p class="text-xs text-slate-500">Desplegamos operativos de seguridad ejecutiva y vigilancia en todo el territorio nacional.</p>
-          </div>
-        </div>
-        <a
-          href="/contacto"
-          class="w-full sm:w-auto text-center px-5 py-2.5 rounded-xl bg-sps-yellow text-sps-blue text-xs sm:text-sm font-bold hover:bg-sps-yellow/90 transition-colors shadow-sm shrink-0"
-        >
-          Solicitar evaluación
-        </a>
-      </div>
-
     </div>
 
   </div>

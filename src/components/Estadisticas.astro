@@ -6,15 +6,17 @@ import { urlFor } from '../lib/sanity';
 const homeData = await getHomePage();
 const sanityCertifications = homeData?.certifications || [];
 const fallbackCertifications = [
-  { name: 'Certificación FONDONORMA', logoUrl: '/images/fondonorma.png' },
-  { name: 'Certificación ISO 9001:2015', logoUrl: '/images/iso.png' }
+  { name: 'Certificación FONDONORMA', logoUrl: null, code: 'FONDONORMA', desc: 'Sistema de Gestión de Calidad' },
+  { name: 'Certificación ISO 9001:2015', logoUrl: null, code: 'ISO 9001:2015', desc: 'Calidad Certificada Internacional' }
 ];
 
 const certsList = sanityCertifications.length > 0
   ? sanityCertifications.map(c => ({
       name: c.name || 'Certificación',
-      logoUrl: c.logo ? urlFor(c.logo)?.url() : null
-    })).filter(c => c.logoUrl)
+      logoUrl: c.logo ? urlFor(c.logo)?.url() : null,
+      code: c.name || 'Certificación',
+      desc: 'Certificación Verificada'
+    }))
   : fallbackCertifications;
 ---
 
@@ -92,19 +94,25 @@ const certsList = sanityCertifications.length > 0
     >
       {certsList.map((cert) => (
         <div class="flex flex-col items-center">
-          <img
-            src={cert.logoUrl}
-            alt={cert.name}
-            class="h-32 lg:h-40 object-contain"
-            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-          />
-          <div
-            class="hidden border-2 border-dashed border-gray-300 w-48 h-32 items-center justify-center text-center text-gray-300 rounded bg-gray-50"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
-            </svg>
-          </div>
+          {cert.logoUrl ? (
+            <img
+              src={cert.logoUrl}
+              alt={cert.name}
+              class="h-28 lg:h-36 object-contain hover:scale-105 transition-transform"
+            />
+          ) : (
+            <div class="flex items-center gap-4 px-6 py-4 rounded-2xl bg-white border border-slate-200 shadow-sm hover:shadow-md hover:border-sps-yellow transition-all">
+              <div class="w-12 h-12 rounded-xl bg-sps-yellow/15 flex items-center justify-center text-sps-yellow shrink-0">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+                </svg>
+              </div>
+              <div>
+                <p class="font-bold text-sps-blue text-sm sm:text-base">{cert.code || cert.name}</p>
+                <p class="text-xs text-slate-500">{cert.desc}</p>
+              </div>
+            </div>
+          )}
         </div>
       ))}
     </div>
