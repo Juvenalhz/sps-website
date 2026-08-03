@@ -17,19 +17,19 @@ const siteTitle = settings?.siteTitle || "SPS";
 ---
 
 <header
-  class="bg-white border-b-4 border-sps-blue py-4 shadow-sm sticky top-0 z-50"
+  class="bg-white border-b-4 border-sps-blue shadow-sm sticky top-0 z-50"
 >
   <div
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center"
+    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20 lg:h-22"
   >
-    <!-- Logo SPS (Sanity o Texto Fallback) -->
-    <a href="/" class="flex items-center gap-2">
+    <!-- Logo SPS (Máximo provecho del alto sin engordar el header) -->
+    <a href="/" class="flex items-center gap-3 h-full py-1.5 shrink-0">
       {
         logoUrl ? (
           <img
             src={logoUrl}
             alt={siteTitle}
-            class="h-14 lg:h-25 w-auto object-contain transition-all"
+            class="h-full w-auto object-contain max-h-[68px] lg:max-h-[76px] transition-all"
           />
         ) : (
           <div class="text-3xl font-extrabold text-sps-blue tracking-tighter">
