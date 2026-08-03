@@ -1,4 +1,5 @@
 import {defineField, defineType} from 'sanity'
+import {MapPinPickerInput} from '../components/MapPinPickerInput'
 
 export const homePage = defineType({
   name: 'homePage',
@@ -124,6 +125,51 @@ export const homePage = defineType({
               title: 'Logo del Cliente (PNG sin fondo o SVG)',
               type: 'image',
               options: { hotspot: true },
+            }),
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'branches',
+      title: 'Sucursales / Sedes en el Mapa Interactivo',
+      type: 'array',
+      description: '📍 Haz clic directamente sobre la imagen del mapa para ubicar cada sede.',
+      of: [
+        {
+          type: 'object',
+          name: 'branchItem',
+          title: 'Sede',
+          fields: [
+            defineField({
+              name: 'name',
+              title: 'Nombre de la Sede',
+              type: 'string',
+              description: 'Ejemplo: Sede Maturín, Sede Caracas, Sede Maracaibo',
+            }),
+            defineField({
+              name: 'address',
+              title: 'Dirección / Descripción',
+              type: 'text',
+              description: 'Ejemplo: Av. Alirio Ugarte Pelayo, C.C. Servimas',
+            }),
+            defineField({
+              name: 'phone',
+              title: 'Teléfonos de Contacto',
+              type: 'string',
+              description: 'Ejemplo: (0212) 952.52.42 / (0424) 000.00.00',
+            }),
+            defineField({
+              name: 'coordinates',
+              title: 'Ubicación en el Mapa',
+              type: 'object',
+              components: {
+                input: MapPinPickerInput,
+              },
+              fields: [
+                defineField({ name: 'topPercent', title: 'Vertical (%)', type: 'number' }),
+                defineField({ name: 'leftPercent', title: 'Horizontal (%)', type: 'number' }),
+              ],
             }),
           ],
         },
