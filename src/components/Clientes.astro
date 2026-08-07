@@ -15,11 +15,16 @@ const fallbackClientes = [
   { name: 'Firestone', logoUrl: '/images/clientes/firestone.png' }
 ];
 
+interface SanityClient {
+  name?: string;
+  logo?: any;
+}
+
 const clientesList = sanityClients.length > 0
-  ? sanityClients.map(c => ({
+  ? sanityClients.map((c: SanityClient) => ({
       name: c.name || 'Cliente',
       logoUrl: c.logo ? urlFor(c.logo)?.url() : null
-    })).filter(c => c.logoUrl)
+    })).filter((c: any) => c.logoUrl)
   : fallbackClientes;
 ---
 
@@ -35,7 +40,7 @@ const clientesList = sanityClients.length > 0
   <!-- Carrusel/Grid de Logos -->
   <div class="flex flex-wrap justify-center lg:justify-between items-center gap-12 lg:gap-8 px-4 lg:px-12">
     
-    {clientesList.map((cliente) => (
+    {clientesList.map((cliente: any) => (
       <div class="flex flex-col items-center justify-center w-28 sm:w-32 lg:w-36 transition-transform hover:scale-105">
         
         <img 

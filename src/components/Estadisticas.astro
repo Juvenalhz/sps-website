@@ -10,8 +10,15 @@ const fallbackCertifications = [
   { name: 'Certificación ISO 9001:2015', logoUrl: null, code: 'ISO 9001:2015', desc: 'Calidad Certificada Internacional' }
 ];
 
+interface Certification {
+  name?: string;
+  logo?: any;
+  code?: string;
+  desc?: string;
+}
+
 const certsList = sanityCertifications.length > 0
-  ? sanityCertifications.map(c => ({
+  ? sanityCertifications.map((c: Certification) => ({
       name: c.name || 'Certificación',
       logoUrl: c.logo ? urlFor(c.logo)?.url() : null,
       code: c.name || 'Certificación',
@@ -92,7 +99,7 @@ const certsList = sanityCertifications.length > 0
     <div
       class="flex flex-col md:flex-row items-center justify-center gap-16 md:gap-32 flex-wrap"
     >
-      {certsList.map((cert) => (
+      {certsList.map((cert: any) => (
         <div class="flex flex-col items-center">
           {cert.logoUrl ? (
             <img
