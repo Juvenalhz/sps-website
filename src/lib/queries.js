@@ -18,7 +18,25 @@ export async function getSiteSettings() {
  */
 export async function getHomePage() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "homePage"][0]`);
+    const data = await sanityClient.fetch(`*[_type == "homePage"][0]{
+      ...,
+      "interactiveBgUrl": interactiveBackgroundImage.asset->url,
+      hotspots[]{
+        _key,
+        placement,
+        customTitle,
+        customDescription,
+        position,
+        service->{
+          _id,
+          title,
+          slug,
+          description,
+          icon,
+          serviceLink
+        }
+      }
+    }`);
     return data || null;
   } catch (error) {
     console.error('Error al consultar homePage de Sanity:', error);
@@ -35,6 +53,19 @@ export async function getAboutPage() {
     return data || null;
   } catch (error) {
     console.error('Error al consultar aboutPage de Sanity:', error);
+    return null;
+  }
+}
+
+/**
+ * Obtiene los datos de la página Servicios (servicesPage)
+ */
+export async function getServicesPage() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "servicesPage"][0]`);
+    return data || null;
+  } catch (error) {
+    console.error('Error al consultar servicesPage de Sanity:', error);
     return null;
   }
 }

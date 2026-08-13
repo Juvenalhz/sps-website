@@ -40,6 +40,14 @@ export const myStructure: StructureResolver = (S) =>
                     .title('Página Nosotros')
                 ),
               S.listItem()
+                .title('Servicios')
+                .child(
+                  S.document()
+                    .schemaType('servicesPage')
+                    .documentId('servicesPage')
+                    .title('Página Servicios')
+                ),
+              S.listItem()
                 .title('Contacto')
                 .child(
                   S.document()

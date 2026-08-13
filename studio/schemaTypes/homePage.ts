@@ -1,5 +1,6 @@
 import {defineField, defineType} from 'sanity'
 import {MapPinPickerInput} from '../components/MapPinPickerInput'
+import {HotspotPinPickerInput} from '../components/HotspotPinPickerInput'
 
 export const homePage = defineType({
   name: 'homePage',
@@ -38,6 +39,84 @@ export const homePage = defineType({
       options: {
         hotspot: true,
       },
+    }),
+    defineField({
+      name: 'hotspots',
+      title: 'Hotspots Interactivos (Vinculados a Servicios)',
+      type: 'array',
+      description: '📍 Configura los puntos interactivos en la imagen. Cada hotspot puede vincularse a un Servicio y posicionarse visualmente.',
+      of: [
+        {
+          type: 'object',
+          name: 'hotspotItem',
+          title: 'Punto Interactivo (Hotspot)',
+          fields: [
+            defineField({
+              name: 'service',
+              title: 'Servicio Vinculado',
+              type: 'reference',
+              to: [{ type: 'service' }],
+              description: 'Selecciona el servicio al cual pertenece este punto interactivo.',
+            }),
+            defineField({
+              name: 'customTitle',
+              title: 'Título Personalizado (Opcional)',
+              type: 'string',
+              description: 'Si se deja vacío, tomará el título del servicio seleccionado.',
+            }),
+            defineField({
+              name: 'customDescription',
+              title: 'Descripción Personalizada (Opcional)',
+              type: 'text',
+              description: 'Si se deja vacío, tomará la descripción del servicio seleccionado.',
+            }),
+            defineField({
+              name: 'placement',
+              title: 'Posición del Tooltip (Flotante)',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Arriba (top)', value: 'top' },
+                  { title: 'Abajo (bottom)', value: 'bottom' },
+                  { title: 'Izquierda (left)', value: 'left' },
+                  { title: 'Derecha (right)', value: 'right' },
+                  { title: 'Derecha Arriba (right-start)', value: 'right-start' },
+                  { title: 'Izquierda Arriba (left-start)', value: 'left-start' },
+                ],
+              },
+              initialValue: 'top',
+            }),
+            defineField({
+              name: 'position',
+              title: 'Ubicación Visual en la Imagen',
+              type: 'object',
+              components: {
+                input: HotspotPinPickerInput,
+              },
+              fields: [
+                defineField({ name: 'topPercent', title: 'Vertical (%)', type: 'number' }),
+                defineField({ name: 'leftPercent', title: 'Horizontal (%)', type: 'number' }),
+              ],
+            }),
+          ],
+          preview: {
+            select: {
+              serviceTitle: 'service.title',
+              customTitle: 'customTitle',
+              topPercent: 'position.topPercent',
+              leftPercent: 'position.leftPercent',
+            },
+            prepare({ serviceTitle, customTitle, topPercent, leftPercent }: any) {
+              const title = customTitle || serviceTitle || 'Hotspot sin servicio asignado';
+              const pos = topPercent !== undefined && leftPercent !== undefined ? ` (${topPercent}%, ${leftPercent}%)` : '';
+              return {
+                title: `${title}${pos}`,
+                subtitle: 'Punto interactivo',
+              }
+            },
+          },
+        },
+      ],
     }),
     defineField({
       name: 'interactiveBlocksTitle',
