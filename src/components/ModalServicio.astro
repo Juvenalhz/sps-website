@@ -1,0 +1,226 @@
+---
+// src/components/ModalServicio.astro
+---
+
+<!-- Overlay y Modal de Detalles del Servicio -->
+<div 
+  id="service-detail-modal" 
+  class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 opacity-0 pointer-events-none transition-all duration-300 backdrop-blur-md bg-black/75"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-service-title"
+>
+  <!-- Caja Principal del Modal -->
+  <div 
+    id="service-modal-box"
+    class="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl border border-gray-100 transform scale-95 transition-all duration-300 flex flex-col relative"
+  >
+    <!-- Botón de Cierre (X) -->
+    <button 
+      id="close-service-modal" 
+      type="button"
+      class="absolute top-5 right-5 z-20 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm text-gray-700 hover:bg-sps-navy hover:text-white flex items-center justify-center shadow-lg transition-all cursor-pointer border border-gray-200 active:scale-95"
+      aria-label="Cerrar modal"
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Banner de Imagen de Fondo / Encabezado Visual -->
+    <div id="modal-image-container" class="relative w-full h-48 sm:h-60 bg-sps-navy overflow-hidden shrink-0">
+      <img 
+        id="modal-service-image" 
+        src="" 
+        alt="" 
+        class="w-full h-full object-cover opacity-90 transition-opacity" 
+      />
+      <div class="absolute inset-0 bg-gradient-to-t from-sps-navy via-sps-navy/50 to-transparent"></div>
+      
+      <!-- Insignia y Título sobre la Imagen -->
+      <div class="absolute bottom-6 left-6 right-6 z-10">
+        <span 
+          id="modal-service-badge" 
+          class="text-xs uppercase font-bold tracking-widest text-sps-navy bg-sps-yellow px-3.5 py-1 rounded-full inline-block mb-2 shadow-md"
+        >
+          Servicio Especializado
+        </span>
+        <h2 
+          id="modal-service-title" 
+          class="text-2xl sm:text-3xl lg:text-4xl font-bold font-oswald text-white uppercase tracking-tight drop-shadow-md"
+        >
+          Título del Servicio
+        </h2>
+      </div>
+    </div>
+
+    <!-- Cuerpo del Modal -->
+    <div class="p-6 sm:p-8 space-y-6 flex-1">
+      
+      <!-- Resumen / Descripción -->
+      <div id="modal-description-container">
+        <p id="modal-service-description" class="text-gray-700 text-base leading-relaxed font-light whitespace-pre-line">
+          Detalles del servicio...
+        </p>
+      </div>
+
+      <!-- Lista de Puntos y Detalles del Servicio -->
+      <div id="modal-highlights-container">
+        <h3 class="text-xs font-bold uppercase tracking-widest text-sps-blue mb-3 font-oswald flex items-center gap-2">
+          <svg class="w-4 h-4 text-sps-blue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <span>Alcance e Ítems del Servicio</span>
+        </h3>
+        <div id="modal-service-highlights" class="space-y-2.5">
+          <!-- Se llena dinámicamente con JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pie del Modal con Botón a Contacto -->
+    <div class="p-6 bg-gray-50 border-t border-gray-100 rounded-b-3xl flex items-center justify-end">
+      <a 
+        id="modal-contacto-link"
+        href="/contacto" 
+        class="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-sps-navy to-sps-blue hover:from-sps-blue hover:to-sps-navy text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
+      >
+        <span>Solicitar asesoría</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+        </svg>
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function setupServiceModal() {
+    const modal = document.getElementById('service-detail-modal');
+    const modalBox = document.getElementById('service-modal-box');
+    const closeBtn = document.getElementById('close-service-modal');
+
+    const modalTitle = document.getElementById('modal-service-title');
+    const modalBadge = document.getElementById('modal-service-badge');
+    const modalImage = document.getElementById('modal-service-image') as HTMLImageElement;
+    const modalDescription = document.getElementById('modal-service-description');
+    const modalHighlights = document.getElementById('modal-service-highlights');
+    const modalHighlightsContainer = document.getElementById('modal-highlights-container');
+    const modalContactoLink = document.getElementById('modal-contacto-link') as HTMLAnchorElement;
+
+    if (!modal || !modalBox || !closeBtn) return;
+
+    function openModal(data: any) {
+      if (!modal || !modalBox) return;
+
+      if (modalTitle) modalTitle.textContent = data.title || 'Servicio';
+      if (modalBadge) modalBadge.textContent = data.badge || 'Servicio Especializado';
+      
+      if (modalImage) {
+        if (data.imageUrl) {
+          modalImage.src = data.imageUrl;
+          modalImage.alt = data.title || '';
+          modalImage.parentElement?.classList.remove('hidden');
+        } else {
+          modalImage.src = 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=1200';
+          modalImage.alt = data.title || '';
+        }
+      }
+
+      if (modalDescription) {
+        if (data.description || data.detailedDescription) {
+          modalDescription.textContent = data.detailedDescription || data.description || '';
+          modalDescription.parentElement?.classList.remove('hidden');
+        } else {
+          modalDescription.parentElement?.classList.add('hidden');
+        }
+      }
+
+      // Renderizar la lista de ítems / viñetas
+      const itemsList = data.detailItems || data.highlights || [];
+
+      if (modalHighlights && modalHighlightsContainer) {
+        modalHighlights.innerHTML = '';
+        if (itemsList && itemsList.length > 0) {
+          modalHighlightsContainer.classList.remove('hidden');
+          itemsList.forEach((item: string) => {
+            const row = document.createElement('div');
+            row.className = 'flex items-center gap-3 p-3.5 bg-sps-light-blue/40 border border-sps-blue/15 rounded-2xl transition-all hover:bg-sps-light-blue/70';
+            row.innerHTML = `
+              <div class="w-7 h-7 rounded-full bg-sps-navy text-sps-yellow flex items-center justify-center font-bold text-xs shrink-0 shadow-sm">
+                ✓
+              </div>
+              <span class="text-sm font-semibold text-sps-navy">${item}</span>
+            `;
+            modalHighlights.appendChild(row);
+          });
+        } else {
+          modalHighlightsContainer.classList.add('hidden');
+        }
+      }
+
+      if (modalContactoLink) {
+        modalContactoLink.href = `/contacto?servicio=${encodeURIComponent(data.title || '')}`;
+      }
+
+      // Mostrar modal con animaciones
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+
+      modalBox.classList.remove('scale-95');
+      modalBox.classList.add('scale-100');
+
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      if (!modal || !modalBox) return;
+
+      modal.classList.remove('opacity-100', 'pointer-events-auto');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+
+      modalBox.classList.remove('scale-100');
+      modalBox.classList.add('scale-95');
+
+      document.body.style.overflow = '';
+    }
+
+    // Escuchar clics en todos los botones "Ver detalles"
+    document.querySelectorAll('.ver-detalles-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        try {
+          const dataStr = btn.getAttribute('data-service');
+          if (dataStr) {
+            const data = JSON.parse(dataStr);
+            openModal(data);
+          }
+        } catch (e) {
+          console.error('Error al abrir modal de servicio:', e);
+        }
+      });
+    });
+
+    // Cerrar al hacer clic en X
+    closeBtn.addEventListener('click', closeModal);
+
+    // Cerrar al hacer clic en el backdrop oscuro fuera de la caja
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Cerrar con tecla Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal && !modal.classList.contains('opacity-0')) {
+        closeModal();
+      }
+    });
+  }
+
+  // Inicializar en carga inicial y soporte para transiciones Astro
+  setupServiceModal();
+  document.addEventListener('astro:page-load', setupServiceModal);
+</script>

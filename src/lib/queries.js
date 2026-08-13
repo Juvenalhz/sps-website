@@ -79,8 +79,14 @@ export async function getServices() {
       _id,
       title,
       slug,
+      badge,
       description,
+      detailedDescription,
+      detailItems,
+      highlights,
+      specifications,
       icon,
+      "galleryUrls": gallery[].asset->url,
       serviceLink
     }`);
     return data || [];
@@ -159,8 +165,13 @@ export async function getServiceBySlug(slug) {
       _id,
       title,
       slug,
+      badge,
       description,
+      detailedDescription,
+      highlights,
+      specifications,
       icon,
+      "galleryUrls": gallery[].asset->url,
       serviceLink
     }`, { slug });
     return data || null;

@@ -2,6 +2,7 @@
 // src/pages/servicios.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CardServicio from '../components/CardServicio.astro';
+import ModalServicio from '../components/ModalServicio.astro';
 import { getServices, getServicesPage } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 
@@ -15,49 +16,90 @@ const pageSubtitle = servicesPageData?.subtitle || 'Soluciones integrales de pro
 const ctaTitle = servicesPageData?.ctaTitle || '¿Necesitas una evaluación de seguridad personalizada?';
 const ctaSubtitle = servicesPageData?.ctaSubtitle || 'Nuestros analistas y consultores están disponibles para auditar tus instalaciones y diseñar una propuesta a la medida de tu empresa.';
 
-// Misma lista de 6 servicios del Hotspot Interactivo
+// Diccionario predeterminado con los puntos exactos solicitados en la imagen
+const defaultItemsMap: Record<string, string[]> = {
+  'instalaciones': ['Vigilancia personalizada', 'Supervisión operativa', 'Monitoreo en tiempo real'],
+  'ejecutiva': ['Meet & Greet', 'Escoltas', 'Traslados y planificación de rutas'],
+  'electronica': ['Cámaras y CCTV', 'Sistemas de alarma', 'Control de acceso', 'GPS'],
+  'perdidas': ['Investigaciones internas', 'Prevención de pérdidas', 'Análisis de incidentes'],
+  'industrial': ['Protocolos de seguridad', 'Evaluación de riesgos industriales'],
+  'consultoria': ['Diagnóstico de seguridad', 'Diseño de estrategias de protección']
+};
+
+function getDetailItemsForService(s: any): string[] {
+  if (s.detailItems && Array.isArray(s.detailItems) && s.detailItems.length > 0) {
+    return s.detailItems;
+  }
+  if (s.highlights && Array.isArray(s.highlights) && s.highlights.length > 0) {
+    return s.highlights;
+  }
+
+  const keyStr = `${s.slug?.current || s.slug || ''} ${s.title || ''}`.toLowerCase();
+  if (keyStr.includes('instalacio')) return defaultItemsMap['instalaciones'];
+  if (keyStr.includes('ejecutiv') || keyStr.includes('vip')) return defaultItemsMap['ejecutiva'];
+  if (keyStr.includes('electron') || keyStr.includes('cctv')) return defaultItemsMap['electronica'];
+  if (keyStr.includes('perdida') || keyStr.includes('investigacio')) return defaultItemsMap['perdidas'];
+  if (keyStr.includes('industr')) return defaultItemsMap['industrial'];
+  if (keyStr.includes('consultor')) return defaultItemsMap['consultoria'];
+
+  return [];
+}
+
+// Fallbacks con los puntos exactos solicitados
 const fallbackServices = [
   {
-    _id: 'cctv',
-    title: 'CCTV Inteligente',
-    slug: { current: 'cctv-inteligente' },
-    description: 'Monitoreo continuo con reconocimiento facial, detección de objetos e integración con centrales de control.',
-    iconSymbol: '📹'
+    _id: 'proteccion-instalaciones',
+    title: 'Protección de instalaciones',
+    badge: 'Vigilancia & Control',
+    slug: { current: 'proteccion-de-instalaciones' },
+    description: 'Resguardo físico integral para activos, plantas corporativas e infraestructuras estratégicas.',
+    detailItems: defaultItemsMap['instalaciones'],
+    iconSymbol: '🛡️'
   },
   {
-    _id: 'comunicaciones',
-    title: 'Comunicaciones',
-    slug: { current: 'comunicaciones' },
-    description: 'Radios de dos vías encriptados y redes tácticas para coordinación inmediata de nuestro personal.',
-    iconSymbol: '📻'
-  },
-  {
-    _id: 'proteccion-vip',
-    title: 'Protección Ejecutiva VIP',
+    _id: 'proteccion-ejecutiva',
+    title: 'Protección ejecutiva',
+    badge: 'Resguardo VIP',
     slug: { current: 'proteccion-ejecutiva' },
-    description: 'Traslados seguros nacionales e internacionales con escoltas altamente entrenados y transporte blindado.',
+    description: 'Servicio de movilidad segura y protección cercana para altos ejecutivos y diplomáticos.',
+    detailItems: defaultItemsMap['ejecutiva'],
     iconSymbol: '👔'
   },
   {
-    _id: 'ciberseguridad',
-    title: 'Ciberseguridad',
-    slug: { current: 'ciberseguridad' },
-    description: 'Protección de infraestructura crítica, redes corporativas, prevención de ciberataques y resguardo de datos.',
-    iconSymbol: '💻'
+    _id: 'seguridad-electronica',
+    title: 'Seguridad electrónica',
+    badge: 'Tecnología & CCTV',
+    slug: { current: 'seguridad-electronica' },
+    description: 'Integración tecnológica avanzada para videovigilancia, alarmas, control de acceso y geolocalización.',
+    detailItems: defaultItemsMap['electronica'],
+    iconSymbol: '📹'
   },
   {
-    _id: 'emergencia',
-    title: 'Línea de Emergencia 24/7',
-    slug: { current: 'linea-de-emergencia' },
-    description: 'Soporte 24/7 y atención a incidentes críticos al instante con centros de mando dedicados.',
-    iconSymbol: '📞'
+    _id: 'control-perdidas',
+    title: 'Control de pérdidas e investigaciones',
+    badge: 'Auditoría & Prevención',
+    slug: { current: 'control-de-perdidas-e-investigaciones' },
+    description: 'Diagnósticos profundos para mitigar mermas, investigar irregularidades e identificar riesgos internos.',
+    detailItems: defaultItemsMap['perdidas'],
+    iconSymbol: '🔎'
   },
   {
     _id: 'seguridad-industrial',
-    title: 'Seguridad Industrial',
+    title: 'Seguridad industrial',
+    badge: 'Prevención de Riesgos',
     slug: { current: 'seguridad-industrial' },
-    description: 'Protocolos de prevención, higiene y protección en plantas, instalaciones industriales y obras complejas.',
+    description: 'Supervisión y protocolos de salud ocupacional, gestión ambiental y mitigación de riesgos industriales.',
+    detailItems: defaultItemsMap['industrial'],
     iconSymbol: '⛑️'
+  },
+  {
+    _id: 'consultoria',
+    title: 'Consultoría',
+    badge: 'Asesoría Estratégica',
+    slug: { current: 'consultoria' },
+    description: 'Evaluación estratégica de vulnerabilidades y elaboración de mapas de riesgos personalizados.',
+    detailItems: defaultItemsMap['consultoria'],
+    iconSymbol: '📞'
   }
 ];
 
@@ -65,15 +107,22 @@ const services = (sanityServices && sanityServices.length > 0)
   ? sanityServices.map((s: any) => ({
       _id: s._id,
       title: s.title,
+      badge: s.badge || 'Servicio Especializado',
       slug: s.slug?.current || '#',
       description: s.description || 'Solución integral de seguridad adaptada a tus requerimientos.',
-      imageUrl: s.icon ? urlFor(s.icon)?.width(800).height(500).url() : null
+      detailedDescription: s.detailedDescription || s.description || '',
+      detailItems: getDetailItemsForService(s),
+      imageUrl: s.icon ? urlFor(s.icon)?.width(800).height(500).url() : null,
+      galleryUrls: s.galleryUrls || []
     }))
   : fallbackServices.map((s: any) => ({
       _id: s._id,
       title: s.title,
+      badge: s.badge,
       slug: s.slug.current,
       description: s.description,
+      detailedDescription: s.description,
+      detailItems: s.detailItems,
       icon: s.iconSymbol
     }));
 ---
@@ -98,11 +147,16 @@ const services = (sanityServices && sanityServices.length > 0)
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-20">
       {services.map((service: any) => (
         <CardServicio 
+          id={service._id}
           title={service.title} 
+          badge={service.badge}
           description={service.description}
+          detailedDescription={service.detailedDescription}
+          detailItems={service.detailItems}
           slug={service.slug}
           imageUrl={service.imageUrl}
           icon={service.icon}
+          galleryUrls={service.galleryUrls}
         />
       ))}
     </div>
@@ -119,5 +173,7 @@ const services = (sanityServices && sanityServices.length > 0)
     </div>
 
   </div>
-</BaseLayout>
 
+  <!-- Modal Interactivo de Detalles -->
+  <ModalServicio />
+</BaseLayout>

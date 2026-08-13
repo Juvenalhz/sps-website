@@ -22,13 +22,27 @@ export const service = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'badge',
+      title: 'Etiqueta / Subtítulo Corto (Opcional)',
+      type: 'string',
+      description: 'Ejemplo: "Vigilancia & Control", "Resguardo VIP", "Tecnología & CCTV"',
+    }),
+    defineField({
       name: 'description',
-      title: 'Descripción Detallada',
+      title: 'Resumen Corto (Para Tarjeta)',
       type: 'text',
+      description: 'Breve resumen descriptivo que se muestra en la tarjeta principal.',
+    }),
+    defineField({
+      name: 'detailItems',
+      title: 'Puntos de Detalles (Lista de viñetas al abrir el modal)',
+      type: 'array',
+      description: 'Agrega cada punto o ítem del servicio (ej: "Vigilancia personalizada", "Supervisión operativa", "Monitoreo en tiempo real")',
+      of: [{type: 'string'}],
     }),
     defineField({
       name: 'icon',
-      title: 'Icono o Imagen Representativa',
+      title: 'Icono o Imagen Principal',
       type: 'image',
       description: 'Tamaño recomendado: 1200 x 800 px para fotografías o 128 x 128 px para íconos PNG/SVG sin fondo',
       options: {
@@ -37,7 +51,7 @@ export const service = defineType({
     }),
     defineField({
       name: 'serviceLink',
-      title: 'Enlace de Interés (Opcional)',
+      title: 'Enlace Externo o Documento PDF (Opcional)',
       type: 'url',
     }),
   ],

@@ -1,29 +1,107 @@
 ---
-interface Props {
+// src/components/CardServicio.astro
+interface SpecItem {
   title: string;
   description: string;
+}
+
+interface Props {
+  id?: string;
+  title: string;
+  badge?: string;
+  description: string;
+  detailedDescription?: string;
+  detailItems?: string[];
+  highlights?: string[];
+  specifications?: SpecItem[];
   slug?: string;
   icon?: string;
   imageUrl?: string;
+  galleryUrls?: string[];
   showLink?: boolean;
 }
 
-const { title, description, icon, imageUrl, showLink = false } = Astro.props;
+const {
+  id,
+  title,
+  badge = 'Servicio Especializado',
+  description,
+  detailedDescription,
+  detailItems = [],
+  highlights = [],
+  specifications = [],
+  slug = '#',
+  icon = '🛡️',
+  imageUrl,
+  galleryUrls = []
+} = Astro.props;
+
+const listItems = detailItems.length > 0 ? detailItems : highlights;
+
+// Preparar payload JSON completo para el modal interactivo
+const serviceDataJson = JSON.stringify({
+  id,
+  title,
+  badge,
+  description,
+  detailedDescription: detailedDescription || description,
+  detailItems: listItems,
+  highlights: listItems,
+  specifications,
+  slug,
+  icon,
+  imageUrl,
+  galleryUrls
+});
 ---
 
-<div class="bg-white rounded-2xl p-8 shadow-md hover:shadow-lg transition-all border border-gray-100 flex flex-col justify-between">
+<div class="bg-white rounded-3xl p-7 shadow-md hover:shadow-2xl transition-all duration-300 border border-gray-100 flex flex-col justify-between group hover:-translate-y-1.5 relative overflow-hidden">
+  
   <div>
-    {imageUrl ? (
-      <img src={imageUrl} alt={title} class="w-full h-48 object-cover rounded-xl mb-6" />
-    ) : (
-      <div class="text-4xl mb-6">{icon || '🛡️'}</div>
+    <!-- Encabezado con Badge -->
+    <div class="flex items-center justify-between mb-4 gap-2">
+      <span class="text-[11px] font-bold uppercase tracking-widest text-sps-blue bg-sps-light-blue px-3 py-1 rounded-full inline-block">
+        {badge}
+      </span>
+      {icon && !imageUrl && (
+        <span class="text-2xl">{icon}</span>
+      )}
+    </div>
+
+    <!-- Imagen Principal (si existe) -->
+    {imageUrl && (
+      <div class="w-full h-48 overflow-hidden rounded-2xl mb-5 relative bg-gray-900 group">
+        <img 
+          src={imageUrl} 
+          alt={title} 
+          class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-95 group-hover:opacity-100" 
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+      </div>
     )}
-    <h3 class="text-2xl font-bold text-sps-navy mb-3 font-oswald uppercase tracking-tight">
+
+    <!-- Título del Servicio -->
+    <h3 class="text-2xl font-bold text-sps-navy mb-3 font-oswald uppercase tracking-tight group-hover:text-sps-blue transition-colors">
       {title}
     </h3>
-    <p class="text-gray-600 text-sm leading-relaxed">
+    
+    <!-- Resumen -->
+    <p class="text-gray-600 text-sm leading-relaxed mb-6 font-light line-clamp-3">
       {description}
     </p>
   </div>
-</div>
 
+  <!-- Botón Ver Detalles -->
+  <div class="pt-4 border-t border-gray-100">
+    <button
+      type="button"
+      class="ver-detalles-btn w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 bg-gradient-to-r from-sps-navy to-sps-blue hover:from-sps-blue hover:to-sps-navy text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all shadow-md hover:shadow-lg cursor-pointer group/btn active:scale-[0.98]"
+      data-service={serviceDataJson}
+    >
+      <span>Ver detalles</span>
+      <svg class="w-4 h-4 transform group-hover/btn:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+      </svg>
+    </button>
+  </div>
+</div>
