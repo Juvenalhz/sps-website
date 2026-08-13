@@ -131,13 +131,13 @@ const branches = homeData?.branches && homeData.branches.length > 0
                   <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-sps-blue shadow-inner"></span>
                 </span>
 
-                <!-- Etiqueta Nombre al hacer Hover -->
-                <span class="absolute left-1/2 -bottom-7 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-sps-blue text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-md whitespace-nowrap pointer-events-none z-30">
+                <!-- Etiqueta Nombre al hacer Hover sutil si el modal está cerrado -->
+                <span class="pin-hover-tag absolute left-1/2 -bottom-7 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-sps-blue text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-md whitespace-nowrap pointer-events-none z-30">
                   {branch.name}
                 </span>
               </button>
 
-              <!-- Tarjeta Modal Flotante (Popup desplegable hacia abajo para no solaparse arriba) -->
+              <!-- Tarjeta Modal Flotante (Popup desplegable al hacer hover o clic) -->
               <div
                 id={`card-${branch.id}`}
                 class={`branch-card hidden absolute top-10 sm:top-12 ${alignClasses} w-64 sm:w-72 p-4 sm:p-5 bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-100 z-50 transition-all duration-300 text-left`}
@@ -200,9 +200,9 @@ const branches = homeData?.branches && homeData.branches.length > 0
 </section>
 
 <script>
-  function setupMapPins() {
-    const pinBtns = document.querySelectorAll('.pin-btn');
-    const closeBtns = document.querySelectorAll('.close-card-btn');
+  function setupMapPinsHover() {
+    const containers = document.querySelectorAll('.pin-container');
+    if (!containers.length) return;
 
     function closeAllCards() {
       document.querySelectorAll('.branch-card').forEach((card) => {
@@ -214,46 +214,90 @@ const branches = homeData?.branches && homeData.branches.length > 0
       });
     }
 
-    pinBtns.forEach((btn) => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const pinId = btn.getAttribute('data-pin-id');
-        const targetCard = document.getElementById(`card-${pinId}`);
-        const pinContainer = btn.closest('.pin-container');
-        
-        const isCurrentlyOpen = !targetCard?.classList.contains('hidden');
+    containers.forEach((container) => {
+      if ((container as HTMLElement).dataset.mapInitialized) return;
+      (container as HTMLElement).dataset.mapInitialized = 'true';
+
+      const btn = container.querySelector('.pin-btn') as HTMLButtonElement | null;
+      if (!btn) return;
+
+      const pinId = btn.getAttribute('data-pin-id');
+      const card = document.getElementById(`card-${pinId}`);
+      if (!card) return;
+
+      let hideTimeout: any = null;
+
+      const showCard = () => {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+
+        // Ocultar otras tarjetas antes de mostrar la actual
         closeAllCards();
 
-        if (!isCurrentlyOpen && targetCard && pinContainer) {
-          targetCard.classList.remove('hidden');
-          pinContainer.classList.remove('z-20');
-          pinContainer.classList.add('z-50');
+        card.classList.remove('hidden');
+        container.classList.remove('z-20');
+        container.classList.add('z-50');
+      };
+
+      const hideCard = () => {
+        hideTimeout = setTimeout(() => {
+          card.classList.add('hidden');
+          container.classList.remove('z-50');
+          container.classList.add('z-20');
+        }, 180);
+      };
+
+      // Hover en el contenedor del pin
+      container.addEventListener('mouseenter', showCard);
+      container.addEventListener('mouseleave', hideCard);
+
+      // Hover dentro de la tarjeta
+      card.addEventListener('mouseenter', () => {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
         }
       });
-    });
+      card.addEventListener('mouseleave', hideCard);
 
-    closeBtns.forEach((btn) => {
+      // Clic para dispositivos móviles / táctiles
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
-        const closeId = btn.getAttribute('data-close-id');
-        const targetCard = document.getElementById(`card-${closeId}`);
-        const pinContainer = btn.closest('.pin-container');
-        targetCard?.classList.add('hidden');
-        if (pinContainer) {
-          pinContainer.classList.remove('z-50');
-          pinContainer.classList.add('z-20');
+        const isHidden = card.classList.contains('hidden');
+        if (isHidden) {
+          showCard();
+        } else {
+          card.classList.add('hidden');
+          container.classList.remove('z-50');
+          container.classList.add('z-20');
         }
       });
-    });
 
-    document.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      if (!target.closest('.branch-card') && !target.closest('.pin-btn')) {
-        closeAllCards();
+      // Botón de cerrar interno
+      const closeBtn = card.querySelector('.close-card-btn');
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          card.classList.add('hidden');
+          container.classList.remove('z-50');
+          container.classList.add('z-20');
+        });
       }
     });
+
+    if (!window._mapHoverGlobalListenerAdded) {
+      window._mapHoverGlobalListenerAdded = true;
+      document.addEventListener('click', (e) => {
+        const target = e.target as HTMLElement;
+        if (!target.closest('.branch-card') && !target.closest('.pin-btn')) {
+          closeAllCards();
+        }
+      });
+    }
   }
 
-  setupMapPins();
-  document.addEventListener('astro:page-load', setupMapPins);
+  setupMapPinsHover();
+  document.addEventListener('astro:page-load', setupMapPinsHover);
 </script>
