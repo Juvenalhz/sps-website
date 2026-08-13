@@ -2,7 +2,7 @@
 // src/pages/blog.astro
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getPosts } from '../lib/queries';
-import { urlFor } from '../lib/sanity';
+import { urlFor, getPostExcerpt } from '../lib/sanity';
 
 // Traer TODOS los artículos del blog sin límite restringido desde Sanity
 const sanityPosts = await getPosts(100);
@@ -12,7 +12,7 @@ const posts = (sanityPosts && sanityPosts.length > 0)
       _id: p._id,
       title: p.title,
       slug: p.slug?.current || '#',
-      excerpt: p.excerpt || 'Sin resumen disponible.',
+      excerpt: getPostExcerpt(p, 150),
       author: p.author || 'Equipo SPS Risk',
       publishedAt: p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' }) : 'Reciente',
       imageUrl: p.mainImage ? urlFor(p.mainImage)?.width(800).height(500).url() : 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'

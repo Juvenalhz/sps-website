@@ -22,6 +22,13 @@ export const post = defineType({
       validation: Rule => Rule.required(),
     }),
     defineField({
+      name: 'excerpt',
+      title: 'Resumen / Extracto del Artículo',
+      type: 'text',
+      rows: 3,
+      description: '✍️ Breve resumen (1-2 oraciones) para mostrar en las tarjetas del blog. Si lo dejas vacío, la web extraerá automáticamente las primeras líneas del contenido.',
+    }),
+    defineField({
       name: 'author',
       title: 'Autor',
       type: 'string',
