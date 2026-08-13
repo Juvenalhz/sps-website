@@ -4,6 +4,7 @@ import { getHomePage } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 
 const homeData = await getHomePage();
+const mapTitle = homeData?.mapTitle || 'ESTAMOS DONDE NOS NECESITES';
 const mapImageUrl = homeData?.mapImage
   ? urlFor(homeData.mapImage)?.url()
   : '/images/mapa-venezuela.png';
@@ -71,8 +72,8 @@ const branches = homeData?.branches && homeData.branches.length > 0
     
     <!-- Columna Izquierda: Título "ESTAMOS DONDE NOS NECESITES" y Botón "Solicitar evaluación" -->
     <div class="lg:col-span-5 z-10 lg:pb-12 text-left">
-      <h2 class="font-oswald text-4xl sm:text-5xl lg:text-[54px] font-medium text-[#333333] uppercase tracking-normal leading-[1.05] mb-5">
-        ESTAMOS DONDE<br />NOS NECESITES
+      <h2 class="font-oswald text-4xl sm:text-5xl lg:text-[54px] font-medium text-[#333333] uppercase tracking-normal leading-[1.05] mb-5 whitespace-pre-line">
+        {mapTitle}
       </h2>
 
       <div>

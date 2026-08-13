@@ -1,23 +1,39 @@
 ---
 // src/components/Hero.astro
+import { getHomePage } from '../lib/queries';
+import { urlFor } from '../lib/sanity';
+
+const homeData = await getHomePage();
+
+const heroTitle = homeData?.heroTitle || 'SOLUCIONES INTEGRALES DE SEGURIDAD Y GESTIÓN DE RIESGOS';
+const heroSubtitle = homeData?.heroSubtitle || 'Protegemos personas, activos y operaciones con estándares internacionales.';
+const videoUrl = homeData?.heroVideoUrl || '/videos/hero-monitoreo.mp4';
+const heroImageUrl = homeData?.heroImage ? urlFor(homeData.heroImage)?.url() : null;
 ---
 
 <section
     class="relative w-full h-[85vh] bg-sps-navy flex items-center overflow-hidden"
 >
-    <!-- FONDO: Video Institucional con Overlay Oscuro -->
+    <!-- FONDO: Video o Imagen con Overlay Oscuro -->
     <div class="absolute inset-0 z-0 overflow-hidden">
-        <video
-            autoplay
-            muted
-            loop
-            playsinline
-            class="w-full h-full object-cover"
-        >
-            <!-- Asegúrate de colocar tu video en la carpeta public/videos/ y apuntar aquí -->
-            <source src="/videos/hero-monitoreo.mp4" type="video/mp4" />
-            Tu navegador no soporta videos HTML5.
-        </video>
+        {heroImageUrl && !homeData?.heroVideoUrl ? (
+            <img 
+                src={heroImageUrl} 
+                alt={heroTitle} 
+                class="w-full h-full object-cover" 
+            />
+        ) : (
+            <video
+                autoplay
+                muted
+                loop
+                playsinline
+                class="w-full h-full object-cover"
+            >
+                <source src={videoUrl} type="video/mp4" />
+                Tu navegador no soporta videos HTML5.
+            </video>
+        )}
 
         <!-- Capa de oscurecimiento (Overlay) para garantizar la legibilidad del texto -->
         <div class="absolute inset-0 bg-sps-navy/70 z-10"></div>
@@ -28,21 +44,17 @@
         <div class="max-w-5xl lg:w-3/4">
             <!-- Título principal -->
             <h1
-                class="text-4xl sm:text-5xl lg:text-5xl font-oswald font-normal text-white tracking-tight leading-none mb-5 uppercase drop-shadow-lg"
+                class="text-4xl sm:text-5xl lg:text-5xl font-oswald font-normal text-white tracking-tight leading-none mb-5 uppercase drop-shadow-lg whitespace-pre-line"
             >
-                SOLUCIONES INTEGRALES DE <br class="hidden sm:block" />
-                SEGURIDAD Y GESTIÓN DE RIESGOS
+                {heroTitle}
             </h1>
 
             <!-- Subtítulo con barra lateral amarilla -->
             <div class="border-l-[3px] border-sps-yellow pl-5 mb-8">
                 <p
-                    class="text-base sm:text-[19px] text-white font-bold leading-snug drop-shadow-md"
+                    class="text-base sm:text-[19px] text-white font-bold leading-snug drop-shadow-md whitespace-pre-line"
                 >
-                    Protegemos personas, activos y operaciones <br
-                        class="hidden sm:block"
-                    />
-                    con estándares internacionales.
+                    {heroSubtitle}
                 </p>
             </div>
 

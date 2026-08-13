@@ -50,6 +50,18 @@ export const homePage = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'aboutTitle',
+      title: 'Título de la Sección "Sobre Nosotros"',
+      type: 'string',
+      initialValue: 'Sobre Nosotros',
+    }),
+    defineField({
+      name: 'aboutText',
+      title: 'Texto de la Sección "Sobre Nosotros"',
+      type: 'text',
+      description: 'Resumen descriptivo de la empresa para la página de inicio.',
+    }),
+    defineField({
       name: 'aboutImage',
       title: 'Imagen de la Sección "Sobre Nosotros"',
       type: 'image',
@@ -59,6 +71,64 @@ export const homePage = defineType({
       },
     }),
     defineField({
+      name: 'whyUsTitle',
+      title: 'Título de la Sección "¿Por qué elegirnos?"',
+      type: 'string',
+      initialValue: '¿POR QUÉ ELEGIRNOS?',
+    }),
+    defineField({
+      name: 'whyUsItems',
+      title: 'Puntos Fuertes de "¿Por qué elegirnos?"',
+      type: 'array',
+      of: [
+        {
+          type: 'object',
+          name: 'whyUsItem',
+          title: 'Punto Fuerte',
+          fields: [
+            defineField({ name: 'title', title: 'Título del Punto', type: 'string' }),
+            defineField({ name: 'description', title: 'Descripción', type: 'text' }),
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: 'stat1Value',
+      title: 'Estadística 1: Número (Ej: 20)',
+      type: 'number',
+      initialValue: 20,
+    }),
+    defineField({
+      name: 'stat1Label',
+      title: 'Estadística 1: Etiqueta (Ej: años de experiencia)',
+      type: 'string',
+      initialValue: 'años de experiencia',
+    }),
+    defineField({
+      name: 'stat2Value',
+      title: 'Estadística 2: Número (Ej: 520)',
+      type: 'number',
+      initialValue: 520,
+    }),
+    defineField({
+      name: 'stat2Label',
+      title: 'Estadística 2: Etiqueta (Ej: trabajadores en todo el país)',
+      type: 'string',
+      initialValue: 'trabajadores en todo el país',
+    }),
+    defineField({
+      name: 'stat3Value',
+      title: 'Estadística 3: Número (Ej: 200)',
+      type: 'number',
+      initialValue: 200,
+    }),
+    defineField({
+      name: 'stat3Label',
+      title: 'Estadística 3: Etiqueta (Ej: clientes en nuestra trayectoria)',
+      type: 'string',
+      initialValue: 'clientes en nuestra trayectoria',
+    }),
+    defineField({
       name: 'whyUsImage',
       title: 'Imagen del Guardia (Sección "¿Por qué elegirnos?")',
       type: 'image',
@@ -66,6 +136,12 @@ export const homePage = defineType({
       options: {
         hotspot: true,
       },
+    }),
+    defineField({
+      name: 'mapTitle',
+      title: 'Título de la Sección Ubicación / Mapa',
+      type: 'string',
+      initialValue: 'ESTAMOS DONDE NOS NECESITES',
     }),
     defineField({
       name: 'mapImage',

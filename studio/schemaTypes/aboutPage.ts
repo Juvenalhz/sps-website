@@ -6,8 +6,19 @@ export const aboutPage = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'title',
+      title: 'Título Principal',
+      type: 'string',
+      initialValue: 'Sobre Nosotros',
+    }),
+    defineField({
+      name: 'subtitle',
+      title: 'Subtítulo',
+      type: 'text',
+    }),
+    defineField({
       name: 'history',
-      title: 'Historia',
+      title: 'Historia / Quiénes Somos',
       type: 'text',
     }),
     defineField({
@@ -18,6 +29,11 @@ export const aboutPage = defineType({
     defineField({
       name: 'vision',
       title: 'Visión',
+      type: 'text',
+    }),
+    defineField({
+      name: 'values',
+      title: 'Valores',
       type: 'text',
     }),
     defineField({

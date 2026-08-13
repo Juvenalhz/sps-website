@@ -4,6 +4,13 @@ import { getHomePage } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
 
 const homeData = await getHomePage();
+const stat1Value = homeData?.stat1Value ?? 20;
+const stat1Label = homeData?.stat1Label || 'años de experiencia';
+const stat2Value = homeData?.stat2Value ?? 520;
+const stat2Label = homeData?.stat2Label || 'trabajadores en todo el país';
+const stat3Value = homeData?.stat3Value ?? 200;
+const stat3Label = homeData?.stat3Label || 'clientes en nuestra trayectoria';
+
 const sanityCertifications = homeData?.certifications || [];
 const fallbackCertifications = [
   { name: 'Certificación FONDONORMA', logoUrl: null, code: 'FONDONORMA', desc: 'Sistema de Gestión de Calidad' },
@@ -29,7 +36,6 @@ const certsList = sanityCertifications.length > 0
 
 <section class="w-full">
   <!-- Franja Azul con Estadísticas y Animación -->
-  <!-- Usamos un gradiente desde un azul más vivo hasta el azul marino oscuro de la marca -->
   <div
     class="w-full bg-gradient-to-r from-blue-600 to-[#041530] text-white py-16"
   >
@@ -43,12 +49,12 @@ const certsList = sanityCertifications.length > 0
           <div
             class="text-5xl sm:text-6xl lg:text-7xl font-light text-sps-yellow mb-2 tracking-tight leading-none"
           >
-            +<span class="counter" data-target="20">0</span>
+            +<span class="counter" data-target={stat1Value}>0</span>
           </div>
           <p
             class="text-sm sm:text-base lg:text-lg font-light text-white/90 tracking-wide"
           >
-            años de experiencia
+            {stat1Label}
           </p>
         </div>
 
@@ -57,12 +63,12 @@ const certsList = sanityCertifications.length > 0
           <div
             class="text-5xl sm:text-6xl lg:text-7xl font-light text-sps-yellow mb-2 tracking-tight leading-none"
           >
-            +<span class="counter" data-target="520">0</span>
+            +<span class="counter" data-target={stat2Value}>0</span>
           </div>
           <p
             class="text-sm sm:text-base lg:text-lg font-light text-white/90 tracking-wide"
           >
-            trabajadores en todo el país
+            {stat2Label}
           </p>
         </div>
 
@@ -71,12 +77,12 @@ const certsList = sanityCertifications.length > 0
           <div
             class="text-5xl sm:text-6xl lg:text-7xl font-light text-sps-yellow mb-2 tracking-tight leading-none"
           >
-            +<span class="counter" data-target="200">0</span>
+            +<span class="counter" data-target={stat3Value}>0</span>
           </div>
           <p
             class="text-sm sm:text-base lg:text-lg font-light text-white/90 tracking-wide"
           >
-            clientes en nuestra trayectoria
+            {stat3Label}
           </p>
         </div>
       </div>

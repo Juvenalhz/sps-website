@@ -9,6 +9,13 @@ import { urlFor } from "../lib/sanity";
 const aboutData = await getAboutPage();
 const homeData = await getHomePage();
 
+const pageTitle = aboutData?.title || 'Sobre Nosotros';
+const pageSubtitle = aboutData?.subtitle || 'Más de 20 años protegiendo activos corporativos, infraestructura crítica y el talento humano con estándares internacionales de seguridad.';
+const historyText = aboutData?.history || 'En SPS Seguridad nos especializamos en la prevención, gestión de riesgos e implementación de tecnología de punta para salvaguardar empresas, instituciones e industrias. Entendemos la seguridad no como elementos aislados, sino como una estrategia unificada.';
+const missionText = aboutData?.mission || 'Proporcionar tranquilidad y protección integral a nuestros clientes mediante soluciones de seguridad avanzadas, adaptadas a los riesgos específicos de cada organización.';
+const visionText = aboutData?.vision || 'Ser la empresa referente en seguridad corporativa e industrial a nivel nacional, destacándonos por la innovación tecnológica, ética profesional e integridad operativa.';
+const valuesText = aboutData?.values || 'Integridad, confidencialidad, excelencia en el servicio, disciplina táctica y constante actualización tecnológica al servicio de nuestros clientes.';
+
 const mainImageUrl = aboutData?.mainImage
   ? urlFor(aboutData.mainImage)?.url()
   : homeData?.aboutImage
@@ -16,7 +23,7 @@ const mainImageUrl = aboutData?.mainImage
   : '/images/sobre-nosotros.jpg';
 ---
 
-<BaseLayout title="Sobre Nosotros">
+<BaseLayout title={pageTitle}>
   <!-- Hero Encabezado -->
   <section class="bg-gradient-to-r from-sps-navy via-[#073067] to-sps-blue text-white py-20 lg:py-28 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
@@ -25,10 +32,10 @@ const mainImageUrl = aboutData?.mainImage
         Trayectoria & Liderazgo
       </span>
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-oswald font-bold uppercase tracking-tight mb-6">
-        Sobre Nosotros
+        {pageTitle}
       </h1>
-      <p class="max-w-3xl mx-auto text-gray-200 text-base sm:text-lg font-light leading-relaxed">
-        Más de 20 años protegiendo activos corporativos, infraestructura crítica y el talento humano con estándares internacionales de seguridad.
+      <p class="max-w-3xl mx-auto text-gray-200 text-base sm:text-lg font-light leading-relaxed whitespace-pre-line">
+        {pageSubtitle}
       </p>
     </div>
   </section>
@@ -41,11 +48,8 @@ const mainImageUrl = aboutData?.mainImage
         <h2 class="text-3xl sm:text-4xl font-oswald font-bold text-sps-navy uppercase tracking-tight mt-2 mb-6">
           Soluciones de Seguridad Integral Diseñadas para Entornos Complejos
         </h2>
-        <p class="text-gray-600 text-base leading-relaxed mb-6">
-          En <strong>SPS Seguridad</strong> nos especializamos en la prevención, gestión de riesgos e implementación de tecnología de punta para salvaguardar empresas, instituciones e industrias.
-        </p>
-        <p class="text-gray-600 text-base leading-relaxed mb-8">
-          Entendemos la seguridad no como elementos aislados, sino como una estrategia unificada que integra personal altamente calificado, ciberseguridad, monitoreo continuo y protocolos de respuesta rápida.
+        <p class="text-gray-600 text-base leading-relaxed mb-8 whitespace-pre-line">
+          {historyText}
         </p>
         <div class="grid grid-cols-2 gap-6 pt-4 border-t border-gray-100">
           <div>
@@ -97,8 +101,8 @@ const mainImageUrl = aboutData?.mainImage
             </svg>
           </div>
           <h3 class="text-xl font-bold font-oswald text-sps-navy uppercase mb-3">Misión</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            Proporcionar tranquilidad y protección integral a nuestros clientes mediante soluciones de seguridad avanzadas, adaptadas a los riesgos específicos de cada organización.
+          <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+            {missionText}
           </p>
         </div>
 
@@ -111,8 +115,8 @@ const mainImageUrl = aboutData?.mainImage
             </svg>
           </div>
           <h3 class="text-xl font-bold font-oswald text-sps-navy uppercase mb-3">Visión</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            Ser la empresa referente en seguridad corporativa e industrial a nivel nacional, destacándonos por la innovación tecnológica, ética profesional e integridad operativa.
+          <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+            {visionText}
           </p>
         </div>
 
@@ -124,8 +128,8 @@ const mainImageUrl = aboutData?.mainImage
             </svg>
           </div>
           <h3 class="text-xl font-bold font-oswald text-sps-navy uppercase mb-3">Valores</h3>
-          <p class="text-gray-600 text-sm leading-relaxed">
-            Integridad, confidencialidad, excelencia en el servicio, disciplina táctica y constante actualización tecnológica al servicio de nuestros clientes.
+          <p class="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+            {valuesText}
           </p>
         </div>
       </div>
