@@ -65,13 +65,13 @@ const branches = homeData?.branches && homeData.branches.length > 0
   : defaultBranches;
 ---
 
-<section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 lg:py-24 overflow-hidden">
+<section class="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16 lg:py-24 relative z-20 overflow-visible">
   
   <!-- Grid principal de 2 columnas: Texto + Botón a la izquierda / Mapa a la derecha -->
-  <div class="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-end">
+  <div class="relative grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
     
     <!-- Columna Izquierda: Título "ESTAMOS DONDE NOS NECESITES" y Botón "Solicitar evaluación" -->
-    <div class="lg:col-span-5 z-10 lg:pb-12 text-left">
+    <div class="lg:col-span-5 z-10 lg:pt-8 text-left">
       <h2 class="font-oswald text-4xl sm:text-5xl lg:text-[54px] font-medium text-[#333333] uppercase tracking-normal leading-[1.05] mb-5 whitespace-pre-line">
         {mapTitle}
       </h2>
@@ -79,7 +79,7 @@ const branches = homeData?.branches && homeData.branches.length > 0
       <div>
         <a
           href="/contacto"
-          class="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-sps-yellow text-white text-xs sm:text-sm font-semibold shadow-sm hover:shadow-md hover:bg-sps-yellow/90 transition-all"
+          class="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-sps-yellow text-sps-navy text-xs sm:text-sm font-bold shadow-md hover:shadow-lg hover:bg-yellow-400 transition-all uppercase tracking-wider"
         >
           Solicitar evaluación
         </a>
@@ -87,7 +87,7 @@ const branches = homeData?.branches && homeData.branches.length > 0
     </div>
 
     <!-- Columna Derecha: Mapa 3D de Venezuela con Pines Interactivos -->
-    <div class="lg:col-span-7 relative">
+    <div class="lg:col-span-7 relative z-20">
       <div class="relative w-full">
         
         <!-- Imagen del Mapa 3D de Venezuela -->
@@ -98,87 +98,100 @@ const branches = homeData?.branches && homeData.branches.length > 0
         />
 
         <!-- Pines de las Sedes sobre el Mapa -->
-        {branches.map((branch: any) => (
-          <div
-            class="absolute z-20 transform -translate-x-1/2 -translate-y-1/2"
-            style={`top: ${branch.topPercent}%; left: ${branch.leftPercent}%;`}
-          >
-            <!-- Botón del Pin Pulsante -->
-            <button
-              type="button"
-              class="pin-btn relative group cursor-pointer focus:outline-none focus:scale-125 transition-transform"
-              data-pin-id={branch.id}
-              aria-label={`Ver información de ${branch.name}`}
-            >
-              <!-- Onda de Pulso Animada -->
-              <span class="absolute -inset-2 rounded-full bg-sps-yellow/60 animate-ping opacity-75 group-hover:bg-sps-yellow"></span>
-              
-              <!-- Círculo Exterior Dorado -->
-              <span class="relative flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-yellow-300 via-sps-yellow to-amber-500 shadow-lg border-2 border-white group-hover:scale-110 transition-all duration-300">
-                <!-- Punto Interior Azul Marino -->
-                <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-sps-blue shadow-inner"></span>
-              </span>
+        {branches.map((branch: any) => {
+          // Posicionamiento inteligente del modal flotante según la coordenada del pin
+          const isRightSide = branch.leftPercent > 60;
+          const isLeftSide = branch.leftPercent < 30;
 
-              <!-- Etiqueta Nombre al hacer Hover -->
-              <span class="absolute left-1/2 -bottom-7 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-sps-blue text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-md whitespace-nowrap pointer-events-none z-30">
-                {branch.name}
-              </span>
-            </button>
+          let alignClasses = 'left-1/2 -translate-x-1/2';
+          if (isRightSide) {
+            alignClasses = 'right-0 sm:right-0 sm:left-auto translate-x-0';
+          } else if (isLeftSide) {
+            alignClasses = 'left-0 sm:left-0 translate-x-0';
+          }
 
-            <!-- Tarjeta Modal Flotante (Popup) -->
+          return (
             <div
-              id={`card-${branch.id}`}
-              class="branch-card hidden absolute bottom-10 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 w-64 sm:w-72 p-4 sm:p-5 bg-white/95 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-100 z-40 transition-all duration-300 text-left"
+              class="pin-container absolute z-20 transform -translate-x-1/2 -translate-y-1/2"
+              style={`top: ${branch.topPercent}%; left: ${branch.leftPercent}%;`}
             >
-              <!-- Header de la Tarjeta con Cierre -->
-              <div class="flex items-start justify-between gap-2 mb-3 pb-2 border-b border-slate-100">
-                <div class="flex items-center gap-2">
-                  <span class="w-2.5 h-2.5 rounded-full bg-sps-yellow"></span>
-                  <h3 class="font-bold text-sps-blue text-sm sm:text-base leading-snug">
-                    {branch.name}
-                  </h3>
-                </div>
-                <button
-                  type="button"
-                  class="close-card-btn text-slate-400 hover:text-sps-blue p-1 transition-colors"
-                  data-close-id={branch.id}
-                  aria-label="Cerrar detalles"
-                >
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                  </svg>
-                </button>
-              </div>
-
-              <!-- Dirección -->
-              <div class="mb-3 space-y-1">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Dirección</p>
-                <p class="text-xs sm:text-sm text-slate-600 font-medium leading-normal">
-                  {branch.address}
-                </p>
-              </div>
-
-              <!-- Teléfono -->
-              <div class="mb-4 space-y-1">
-                <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Teléfono de Contacto</p>
-                <p class="text-xs sm:text-sm text-sps-blue font-bold tracking-wide">
-                  {branch.phone}
-                </p>
-              </div>
-
-              <!-- Botón Contactar Sede -->
-              <a
-                href={`/contacto?sede=${encodeURIComponent(branch.name)}`}
-                class="inline-flex items-center justify-center w-full py-2 px-3 rounded-xl bg-sps-blue text-white text-xs font-bold hover:bg-sps-blue/90 transition-colors shadow-sm gap-1.5"
+              <!-- Botón del Pin Pulsante -->
+              <button
+                type="button"
+                class="pin-btn relative group cursor-pointer focus:outline-none focus:scale-125 transition-transform"
+                data-pin-id={branch.id}
+                aria-label={`Ver información de ${branch.name}`}
               >
-                <span>Contactar con esta Sede</span>
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                </svg>
-              </a>
+                <!-- Onda de Pulso Animada -->
+                <span class="absolute -inset-2 rounded-full bg-sps-yellow/60 animate-ping opacity-75 group-hover:bg-sps-yellow"></span>
+                
+                <!-- Círculo Exterior Dorado -->
+                <span class="relative flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gradient-to-br from-yellow-300 via-sps-yellow to-amber-500 shadow-lg border-2 border-white group-hover:scale-110 transition-all duration-300">
+                  <!-- Punto Interior Azul Marino -->
+                  <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-sps-blue shadow-inner"></span>
+                </span>
+
+                <!-- Etiqueta Nombre al hacer Hover -->
+                <span class="absolute left-1/2 -bottom-7 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-sps-blue text-white text-[10px] sm:text-xs font-bold px-2 py-0.5 rounded shadow-md whitespace-nowrap pointer-events-none z-30">
+                  {branch.name}
+                </span>
+              </button>
+
+              <!-- Tarjeta Modal Flotante (Popup desplegable hacia abajo para no solaparse arriba) -->
+              <div
+                id={`card-${branch.id}`}
+                class={`branch-card hidden absolute top-10 sm:top-12 ${alignClasses} w-64 sm:w-72 p-4 sm:p-5 bg-white/98 backdrop-blur-md rounded-2xl shadow-2xl border border-slate-100 z-50 transition-all duration-300 text-left`}
+              >
+                <!-- Header de la Tarjeta con Cierre -->
+                <div class="flex items-start justify-between gap-2 mb-3 pb-2 border-b border-slate-100">
+                  <div class="flex items-center gap-2">
+                    <span class="w-2.5 h-2.5 rounded-full bg-sps-yellow shrink-0"></span>
+                    <h3 class="font-bold text-sps-blue text-sm sm:text-base leading-snug">
+                      {branch.name}
+                    </h3>
+                  </div>
+                  <button
+                    type="button"
+                    class="close-card-btn text-slate-400 hover:text-sps-blue p-1 transition-colors shrink-0"
+                    data-close-id={branch.id}
+                    aria-label="Cerrar detalles"
+                  >
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Dirección -->
+                <div class="mb-3 space-y-1">
+                  <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Dirección</p>
+                  <p class="text-xs sm:text-sm text-slate-600 font-medium leading-normal">
+                    {branch.address}
+                  </p>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="mb-4 space-y-1">
+                  <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Teléfono de Contacto</p>
+                  <p class="text-xs sm:text-sm text-sps-blue font-bold tracking-wide">
+                    {branch.phone}
+                  </p>
+                </div>
+
+                <!-- Botón Contactar Sede -->
+                <a
+                  href={`/contacto?sede=${encodeURIComponent(branch.name)}`}
+                  class="inline-flex items-center justify-center w-full py-2 px-3 rounded-xl bg-sps-blue text-white text-xs font-bold hover:bg-sps-navy transition-colors shadow-sm gap-1.5"
+                >
+                  <span>Contactar con esta Sede</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </a>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
 
@@ -195,6 +208,10 @@ const branches = homeData?.branches && homeData.branches.length > 0
       document.querySelectorAll('.branch-card').forEach((card) => {
         card.classList.add('hidden');
       });
+      document.querySelectorAll('.pin-container').forEach((container) => {
+        container.classList.remove('z-50');
+        container.classList.add('z-20');
+      });
     }
 
     pinBtns.forEach((btn) => {
@@ -202,12 +219,15 @@ const branches = homeData?.branches && homeData.branches.length > 0
         e.stopPropagation();
         const pinId = btn.getAttribute('data-pin-id');
         const targetCard = document.getElementById(`card-${pinId}`);
+        const pinContainer = btn.closest('.pin-container');
         
         const isCurrentlyOpen = !targetCard?.classList.contains('hidden');
         closeAllCards();
 
-        if (!isCurrentlyOpen && targetCard) {
+        if (!isCurrentlyOpen && targetCard && pinContainer) {
           targetCard.classList.remove('hidden');
+          pinContainer.classList.remove('z-20');
+          pinContainer.classList.add('z-50');
         }
       });
     });
@@ -217,7 +237,12 @@ const branches = homeData?.branches && homeData.branches.length > 0
         e.stopPropagation();
         const closeId = btn.getAttribute('data-close-id');
         const targetCard = document.getElementById(`card-${closeId}`);
+        const pinContainer = btn.closest('.pin-container');
         targetCard?.classList.add('hidden');
+        if (pinContainer) {
+          pinContainer.classList.remove('z-50');
+          pinContainer.classList.add('z-20');
+        }
       });
     });
 
