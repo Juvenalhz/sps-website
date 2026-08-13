@@ -171,7 +171,7 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
     </div>
 
     <!-- Contenedor de hotspots -->
-    <div class="absolute inset-0 w-full h-full max-w-7xl mx-auto">
+    <div class="absolute inset-0 w-full h-full">
       {hotspots.map((hotspot) => (
         <div class="absolute group hotspot-wrapper z-10" style={`top: ${hotspot.position.top}; left: ${hotspot.position.left}; transform: translate(-50%, -50%);`}>
           <!-- Botón Hotspot -->
@@ -295,42 +295,79 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
   }
 
   function initHeroInteractivo() {
-    const buttons = document.querySelectorAll('.hotspot-btn');
-    if (!buttons.length) return;
+    const wrappers = document.querySelectorAll('.hotspot-wrapper');
+    if (!wrappers.length) return;
 
-    buttons.forEach((btn) => {
-      if (btn.dataset.heroInitialized) return;
-      btn.dataset.heroInitialized = "true";
+    wrappers.forEach((wrapper) => {
+      if (wrapper.dataset.heroInitialized) return;
+      wrapper.dataset.heroInitialized = "true";
 
-      btn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        
-        const targetId = btn.getAttribute("data-target");
-        const tooltip = document.getElementById(targetId);
-        if (!tooltip) return;
+      const btn = wrapper.querySelector('.hotspot-btn');
+      if (!btn) return;
 
-        const isHidden = tooltip.classList.contains("hidden");
+      const targetId = btn.getAttribute("data-target");
+      const tooltip = document.getElementById(targetId);
+      if (!tooltip) return;
 
-        // Primero, ocultar todos los tooltips y reiniciar los z-index de los wrappers
+      let hideTimeout = null;
+
+      const showTooltip = () => {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+
+        // Primero, ocultar todos los otros tooltips y reiniciar los z-index
         document.querySelectorAll('.hotspot-tooltip').forEach(t => {
-          t.classList.add("hidden");
+          if (t !== tooltip) t.classList.add("hidden");
         });
         document.querySelectorAll('.hotspot-wrapper').forEach(w => {
-          w.classList.remove("z-50");
-          w.classList.add("z-10");
+          if (w !== wrapper) {
+            w.classList.remove("z-50");
+            w.classList.add("z-10");
+          }
         });
 
-        // Si estaba oculto, mostrarlo, posicionarlo y subir el z-index de su contenedor
+        // Mostrar el tooltip actual y subir z-index de su contenedor
+        tooltip.classList.remove("hidden");
+        wrapper.classList.remove("z-10");
+        wrapper.classList.add("z-50");
+
+        requestAnimationFrame(() => {
+          updatePosition(btn, tooltip);
+        });
+      };
+
+      const hideTooltip = () => {
+        hideTimeout = setTimeout(() => {
+          tooltip.classList.add("hidden");
+          wrapper.classList.remove("z-50");
+          wrapper.classList.add("z-10");
+        }, 150);
+      };
+
+      // Eventos Hover para Desktop
+      wrapper.addEventListener("mouseenter", showTooltip);
+      wrapper.addEventListener("mouseleave", hideTooltip);
+
+      tooltip.addEventListener("mouseenter", () => {
+        if (hideTimeout) {
+          clearTimeout(hideTimeout);
+          hideTimeout = null;
+        }
+      });
+      tooltip.addEventListener("mouseleave", hideTooltip);
+
+      // Evento Click para soporte táctil (Móvil/Tablet)
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isHidden = tooltip.classList.contains("hidden");
         if (isHidden) {
-          tooltip.classList.remove("hidden");
-          const wrapper = btn.closest('.hotspot-wrapper');
-          if (wrapper) {
-            wrapper.classList.remove("z-10");
-            wrapper.classList.add("z-50");
-          }
-          requestAnimationFrame(() => {
-             updatePosition(btn, tooltip);
-          });
+          showTooltip();
+        } else {
+          tooltip.classList.add("hidden");
+          wrapper.classList.remove("z-50");
+          wrapper.classList.add("z-10");
         }
       });
     });
@@ -351,13 +388,13 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
       });
       
       window.addEventListener('resize', () => {
-         document.querySelectorAll('.hotspot-btn').forEach((btn) => {
-            const targetId = btn.getAttribute("data-target");
-            const tooltip = document.getElementById(targetId);
-            if(tooltip && !tooltip.classList.contains("hidden")){
-              updatePosition(btn, tooltip);
-            }
-         });
+        document.querySelectorAll('.hotspot-btn').forEach((btn) => {
+          const targetId = btn.getAttribute("data-target");
+          const tooltip = document.getElementById(targetId);
+          if (tooltip && !tooltip.classList.contains("hidden")) {
+            updatePosition(btn, tooltip);
+          }
+        });
       });
     }
   }
