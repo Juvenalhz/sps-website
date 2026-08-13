@@ -6,6 +6,12 @@ export const aboutPage = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'badgeText',
+      title: 'Etiqueta superior (Badge encima del título)',
+      type: 'string',
+      initialValue: 'Trayectoria & Liderazgo',
+    }),
+    defineField({
       name: 'title',
       title: 'Título Principal',
       type: 'string',

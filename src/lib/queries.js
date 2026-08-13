@@ -58,6 +58,19 @@ export async function getAboutPage() {
 }
 
 /**
+ * Obtiene los datos de la página de Contacto (contactPage)
+ */
+export async function getContactPage() {
+  try {
+    const data = await sanityClient.fetch(`*[_type == "contactPage"][0]`);
+    return data || null;
+  } catch (error) {
+    console.error('Error al consultar contactPage de Sanity:', error);
+    return null;
+  }
+}
+
+/**
  * Obtiene los datos de la página Servicios (servicesPage)
  */
 export async function getServicesPage() {
@@ -168,6 +181,7 @@ export async function getServiceBySlug(slug) {
       badge,
       description,
       detailedDescription,
+      detailItems,
       highlights,
       specifications,
       icon,

@@ -1,21 +1,27 @@
 ---
 // src/pages/contacto.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { getContactPage } from "../lib/queries";
+
+const contactData = await getContactPage();
+const badgeText = contactData?.badgeText || 'Atención Personalizada 24/7';
+const pageTitle = contactData?.title || 'Contáctanos';
+const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los riesgos de tu empresa y diseñar una solución de seguridad integral a la medida de tus necesidades.';
 ---
 
-<BaseLayout title="Contacto">
+<BaseLayout title={pageTitle}>
   <!-- Hero / Encabezado de Contacto -->
   <section class="bg-gradient-to-r from-sps-navy via-[#073067] to-sps-blue text-white py-20 lg:py-28 relative overflow-hidden">
     <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
       <span class="inline-block px-4 py-1.5 rounded-full bg-sps-yellow/20 text-sps-yellow text-xs sm:text-sm font-bold tracking-wider uppercase mb-4">
-        Atención Personalizada 24/7
+        {badgeText}
       </span>
       <h1 class="text-4xl sm:text-5xl lg:text-6xl font-oswald font-bold uppercase tracking-tight mb-6">
-        Contáctanos
+        {pageTitle}
       </h1>
       <p class="max-w-2xl mx-auto text-gray-200 text-base sm:text-lg font-light leading-relaxed">
-        Estamos listos para evaluar los riesgos de tu empresa y diseñar una solución de seguridad integral a la medida de tus necesidades.
+        {pageSubtitle}
       </p>
     </div>
   </section>
