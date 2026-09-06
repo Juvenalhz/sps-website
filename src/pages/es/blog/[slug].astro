@@ -2,8 +2,7 @@
 // src/pages/es/blog/[slug].astro
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { getAllPostSlugs, getPostBySlug } from '../../../lib/queries';
-import { urlFor } from '../../../lib/sanity';
-import { toHTML } from '@portabletext/to-html';
+import { urlFor, renderPortableText } from '../../../lib/sanity';
 
 export async function getStaticPaths() {
   const slugs = await getAllPostSlugs();
@@ -25,7 +24,7 @@ const { slug } = Astro.params;
 const post = await getPostBySlug(slug);
 
 // Formatear HTML del cuerpo de Sanity (PortableText) o mostrar fallback
-const bodyHtml = post?.body ? toHTML(post.body) : null;
+const bodyHtml = post?.body ? renderPortableText(post.body) : null;
 const imageUrl = post?.mainImage ? urlFor(post.mainImage)?.width(1200).height(630).url() : 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=1200';
 const title = post?.title || `Artículo: ${slug}`;
 const excerpt = post?.excerpt || 'Análisis detallado sobre seguridad corporativa y protección estratégica.';
@@ -68,7 +67,7 @@ const author = post?.author || 'Equipo SPS Risk';
     </div>
 
     <!-- Cuerpo del Artículo (PortableText o Fallback) -->
-    <div class="prose prose-lg max-w-none text-gray-700 leading-relaxed font-normal">
+    <div class="blog-prose prose prose-lg max-w-none text-gray-700 leading-relaxed font-normal">
       {bodyHtml ? (
         <div set:html={bodyHtml} />
       ) : (

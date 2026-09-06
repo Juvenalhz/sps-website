@@ -287,8 +287,8 @@ const branches = homeData?.branches && homeData.branches.length > 0
       }
     });
 
-    if (!window._mapHoverGlobalListenerAdded) {
-      window._mapHoverGlobalListenerAdded = true;
+    if (!(window as any)._mapHoverGlobalListenerAdded) {
+      (window as any)._mapHoverGlobalListenerAdded = true;
       document.addEventListener('click', (e) => {
         const target = e.target as HTMLElement;
         if (!target.closest('.branch-card') && !target.closest('.pin-btn')) {
