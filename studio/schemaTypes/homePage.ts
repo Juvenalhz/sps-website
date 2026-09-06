@@ -309,12 +309,6 @@ export const homePage = defineType({
               description: 'Ejemplo: Av. Alirio Ugarte Pelayo, C.C. Servimas',
             }),
             defineField({
-              name: 'phone',
-              title: 'Teléfonos de Contacto',
-              type: 'string',
-              description: 'Ejemplo: (0212) 952.52.42 / (0424) 000.00.00',
-            }),
-            defineField({
               name: 'coordinates',
               title: 'Ubicación en el Mapa',
               type: 'object',
