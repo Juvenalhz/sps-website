@@ -3,8 +3,8 @@
 import { getPosts } from '../lib/queries';
 import { urlFor, getPostExcerpt } from '../lib/sanity';
 
-// 1. Consultar posts de Sanity
-const sanityPosts = await getPosts(4);
+// 1. Consultar los 2 artículos más recientes de Sanity
+const sanityPosts = await getPosts(2);
 
 // 2. Mock posts como fallback si Sanity no devuelve artículos aún
 const fallbackPosts = [
@@ -12,29 +12,19 @@ const fallbackPosts = [
     _id: '1',
     title: 'Análisis de Riesgos Corporativos 2026',
     excerpt: 'Estrategias clave para la evaluación y mitigación de amenazas físicas y digitales en instalaciones.',
-    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800'
+    imageUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800',
+    slug: 'analisis-de-riesgos-corporativos'
   },
   {
     _id: '2',
     title: 'Tendencias en Videovigilancia e IA',
     excerpt: 'Cómo los algoritmos de detección temprana transforman la respuesta ante incidentes.',
-    imageUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    _id: '3',
-    title: 'Protocolos de Seguridad Ejecutiva VIP',
-    excerpt: 'Mejores prácticas internacionales en movilidad segura y protección de altos directivos.',
-    imageUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&q=80&w=800'
-  },
-  {
-    _id: '4',
-    title: 'Ciberseguridad en Sistemas Físicos Integrados',
-    excerpt: 'Protección de redes de control de acceso y monitoreo frente a vulnerabilidades externas.',
-    imageUrl: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&q=80&w=800'
+    imageUrl: 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&q=80&w=800',
+    slug: 'tendencias-en-videovigilancia'
   }
 ];
 
-// Si Sanity trae publicaciones reales, las adaptamos; si no, usamos los de prueba
+// Si Sanity trae publicaciones reales, usamos las 2 más recientes
 const posts = (sanityPosts && sanityPosts.length > 0)
   ? sanityPosts.map((p: any) => ({
       _id: p._id,
@@ -49,7 +39,7 @@ const posts = (sanityPosts && sanityPosts.length > 0)
 <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-24">
   
   <!-- Encabezado de la sección -->
-  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16 items-end">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-14 items-end">
     
     <!-- Lado Izquierdo (Títulos) -->
     <div>
@@ -59,31 +49,22 @@ const posts = (sanityPosts && sanityPosts.length > 0)
       </h2>
     </div>
     
-    <!-- Lado Derecho (Texto y Enlace) -->
+    <!-- Lado Derecho (Texto de introducción) -->
     <div class="lg:pl-8">
-      <p class="text-gray-500 text-[14px] lg:text-[15px] mb-4">
+      <p class="text-gray-500 text-[14px] lg:text-[15px] leading-relaxed">
         Mantente informado con nuestros análisis, comunicados oficiales e informes especializados sobre protección corporativa y tendencias tecnológicas.
       </p>
-      <a href="/blog" class="inline-flex items-center gap-2 text-sps-blue font-medium hover:text-sps-navy transition-colors text-sm group">
-        <span class="w-6 h-6 bg-sps-blue text-white flex items-center justify-center transition-colors group-hover:bg-sps-navy">
-          <!-- SVG Flecha -->
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-3.5 h-3.5">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-          </svg>
-        </span>
-        Más información
-      </a>
     </div>
   </div>
 
-  <!-- Grid de Artículos (2x2) -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+  <!-- Grid de Artículos Recientes (2 columnas) -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12">
     
     {posts.map((post: any) => (
       <a href={post.slug && post.slug !== '#' ? `/es/blog/${post.slug}` : '#'} class="group block cursor-pointer flex flex-col">
         <article class="flex flex-col h-full">
           <!-- Imagen -->
-          <div class="w-full h-[250px] sm:h-[300px] lg:h-[320px] mb-6 overflow-hidden bg-gray-100 rounded-lg">
+          <div class="w-full h-[260px] sm:h-[320px] mb-6 overflow-hidden bg-gray-100 rounded-2xl shadow-md">
             <img 
               src={post.imageUrl} 
               alt={post.title}
@@ -93,8 +74,8 @@ const posts = (sanityPosts && sanityPosts.length > 0)
           </div>
           
           <!-- Contenido (con línea azul a la izquierda) -->
-          <div class="border-l-2 border-sps-blue/30 group-hover:border-sps-blue transition-colors pl-4 mt-auto">
-            <h3 class="font-bold text-xl text-gray-800 mb-2 group-hover:text-sps-blue transition-colors">
+          <div class="border-l-3 border-sps-blue/40 group-hover:border-sps-blue transition-colors pl-4 mt-auto">
+            <h3 class="font-bold text-xl text-gray-800 mb-2 group-hover:text-sps-blue transition-colors leading-snug">
               {post.title}
             </h3>
             <p class="text-gray-500 text-[14px] leading-relaxed">
@@ -107,4 +88,18 @@ const posts = (sanityPosts && sanityPosts.length > 0)
     
   </div>
 
+  <!-- Botón Inferior hacia la página del Blog -->
+  <div class="mt-14 text-center">
+    <a 
+      href="/es/blog" 
+      class="inline-flex items-center gap-3 px-8 py-3.5 rounded-full bg-sps-navy hover:bg-sps-blue text-white text-xs sm:text-sm font-bold uppercase tracking-wider transition-all shadow-md hover:shadow-lg cursor-pointer"
+    >
+      <span>Ver todos los artículos</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+      </svg>
+    </a>
+  </div>
+
 </section>
+
