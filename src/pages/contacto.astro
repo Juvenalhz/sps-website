@@ -1,12 +1,34 @@
 ---
 // src/pages/contacto.astro
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { getContactPage } from "../lib/queries";
+import { getContactPage, getSiteSettings, getServices } from "../lib/queries";
 
 const contactData = await getContactPage();
+const siteSettings = await getSiteSettings();
+const sanityServices = await getServices();
+
 const badgeText = contactData?.badgeText || 'Atención Personalizada 24/7';
 const pageTitle = contactData?.title || 'Contáctanos';
 const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los riesgos de tu empresa y diseñar una solución de seguridad integral a la medida de tus necesidades.';
+
+const sectionTitle = contactData?.sectionTitle || 'Estamos donde nos necesites';
+const sectionDescription = contactData?.sectionDescription || 'Comunícate con nuestro equipo multidisciplinario. Ofrecemos respuesta inmediata y asesoría experta en todo el territorio nacional.';
+
+const headquartersTitle = contactData?.headquartersTitle || 'Sede Principal (Caracas)';
+const headquartersAddress = contactData?.headquartersAddress || siteSettings?.address || 'Av. Francisco de Miranda, Edif. EASO, Piso 3, Ofc. 3JK, El Rosal, Caracas.';
+
+const phoneTitle = contactData?.phoneTitle || 'Teléfonos de Contacto';
+const phoneMain = contactData?.phoneMain || siteSettings?.contactPhone || '+58 (212) 952.52.42';
+const phoneEmergency = contactData?.phoneEmergency || 'Línea de Emergencia 24/7 disponible para clientes';
+const whatsappNumber = contactData?.whatsappNumber;
+
+const emailTitle = contactData?.emailTitle || 'Correo Electrónico';
+const emailMain = contactData?.emailMain || siteSettings?.contactEmail || 'contacto@sps-seguridad.com';
+
+const formTitle = contactData?.formTitle || 'Solicitar Evaluación o Cotización';
+const formSubtitle = contactData?.formSubtitle || 'Completa el siguiente formulario y un consultor especialista en seguridad se pondrá en contacto contigo en breve.';
+const formSubmitButtonText = contactData?.formSubmitButtonText || 'Enviar Solicitud';
+const formSuccessText = contactData?.formSuccessText || 'Gracias por tu mensaje. Te contactaremos pronto.';
 ---
 
 <BaseLayout title={pageTitle}>
@@ -34,14 +56,14 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
       <div class="lg:col-span-5 flex flex-col justify-between p-8 sm:p-12 bg-gray-50/50 rounded-3xl border border-gray-100">
         <div>
           <h2 class="text-2xl sm:text-3xl font-oswald font-bold text-sps-navy uppercase mb-2">
-            Estamos donde nos necesites
+            {sectionTitle}
           </h2>
           <p class="text-gray-500 text-sm mb-8">
-            Comunícate con nuestro equipo multidisciplinario. Ofrecemos respuesta inmediata y asesoría experta en todo el territorio nacional.
+            {sectionDescription}
           </p>
 
           <div class="space-y-6">
-            <!-- Tarjeta 1: Dirección -->
+            <!-- Tarjeta 1: Dirección Sede Principal -->
             <div class="flex items-start gap-5 p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
               <div class="w-11 h-11 rounded-xl bg-sps-blue/10 text-sps-blue flex items-center justify-center shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -50,14 +72,14 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
                 </svg>
               </div>
               <div>
-                <h3 class="font-bold text-gray-900 text-base mb-0.5">Sede Principal</h3>
-                <p class="text-gray-500 text-xs leading-relaxed">
-                  Caracas, Venezuela. Cobertura operativa a nivel nacional.
+                <h3 class="font-bold text-gray-900 text-base mb-0.5">{headquartersTitle}</h3>
+                <p class="text-gray-500 text-xs leading-relaxed whitespace-pre-line">
+                  {headquartersAddress}
                 </p>
               </div>
             </div>
 
-            <!-- Tarjeta 2: Teléfono -->
+            <!-- Tarjeta 2: Teléfonos -->
             <div class="flex items-start gap-5 p-5 rounded-2xl bg-white border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
               <div class="w-11 h-11 rounded-xl bg-sps-blue/10 text-sps-blue flex items-center justify-center shrink-0">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -65,11 +87,21 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
                 </svg>
               </div>
               <div>
-                <h3 class="font-bold text-gray-900 text-base mb-0.5">Teléfonos de Contacto</h3>
+                <h3 class="font-bold text-gray-900 text-base mb-0.5">{phoneTitle}</h3>
                 <p class="text-gray-500 text-xs leading-relaxed">
-                  +58 (212) 000-0000<br/>
-                  Línea de Emergencia 24/7 disponible para clientes.
+                  <strong class="text-sps-blue">{phoneMain}</strong><br/>
+                  {phoneEmergency}
                 </p>
+                {whatsappNumber && (
+                  <a 
+                    href={`https://wa.me/${whatsappNumber.replace(/[^0-9]/g, '')}`} 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-600 hover:text-emerald-700 mt-2 bg-emerald-50 px-2.5 py-1 rounded-lg transition-colors"
+                  >
+                    <span>💬 Contactar por WhatsApp</span>
+                  </a>
+                )}
               </div>
             </div>
 
@@ -81,10 +113,9 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
                 </svg>
               </div>
               <div>
-                <h3 class="font-bold text-gray-900 text-base mb-0.5">Correo Electrónico</h3>
+                <h3 class="font-bold text-gray-900 text-base mb-0.5">{emailTitle}</h3>
                 <p class="text-gray-500 text-xs leading-relaxed">
-                  contacto@sps-seguridad.com<br/>
-                  ventas@sps-seguridad.com
+                  <a href={`mailto:${emailMain}`} class="hover:text-sps-blue transition-colors font-semibold">{emailMain}</a>
                 </p>
               </div>
             </div>
@@ -92,16 +123,16 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
         </div>
       </div>
 
-      <!-- Lado Derecho: Formulario de Contacto (Diseño Premium) -->
+      <!-- Lado Derecho: Formulario de Contacto (Dinámico) -->
       <div class="lg:col-span-7 bg-white rounded-3xl p-8 sm:p-12 border border-gray-100 shadow-xl">
         <h3 class="text-2xl sm:text-3xl font-oswald font-bold text-sps-navy uppercase mb-2">
-          Solicitar Evaluación o Cotización
+          {formTitle}
         </h3>
         <p class="text-gray-500 text-sm mb-8">
-          Completa el siguiente formulario y un consultor especialista en seguridad se pondrá en contacto contigo en breve.
+          {formSubtitle}
         </p>
 
-        <form class="space-y-6" onsubmit="event.preventDefault(); alert('Gracias por tu mensaje. Te contactaremos pronto.');">
+        <form class="space-y-6" data-success-msg={formSuccessText} onsubmit={`event.preventDefault(); alert(this.getAttribute('data-success-msg'));`}>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <!-- Nombre -->
             <div>
@@ -161,7 +192,7 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
             </div>
           </div>
 
-          <!-- Servicio de Interés -->
+          <!-- Servicio de Interés (Alimentado dinámicamente desde Sanity) -->
           <div>
             <label for="servicio" class="block text-xs font-bold uppercase tracking-wider text-gray-700 mb-2">
               Servicio de Interés *
@@ -172,12 +203,20 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
               class="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-sps-blue focus:ring-2 focus:ring-sps-blue/20 outline-none transition-all text-sm text-gray-800 bg-white"
             >
               <option value="">Selecciona un servicio</option>
-              <option value="cctv">CCTV Inteligente y Videovigilancia</option>
-              <option value="proteccion">Protección Ejecutiva VIP</option>
-              <option value="acceso">Control de Acceso</option>
-              <option value="industrial">Seguridad Industrial y Prevención</option>
-              <option value="ciberseguridad">Ciberseguridad Corporativa</option>
-              <option value="evaluacion">Evaluación Integral de Riesgos</option>
+              {sanityServices && sanityServices.length > 0 ? (
+                sanityServices.map((svc: any) => (
+                  <option value={svc.slug?.current || svc.title}>{svc.title}</option>
+                ))
+              ) : (
+                <>
+                  <option value="cctv">CCTV Inteligente y Videovigilancia</option>
+                  <option value="proteccion">Protección Ejecutiva VIP</option>
+                  <option value="acceso">Control de Acceso</option>
+                  <option value="industrial">Seguridad Industrial y Prevención</option>
+                  <option value="ciberseguridad">Ciberseguridad Corporativa</option>
+                  <option value="evaluacion">Evaluación Integral de Riesgos</option>
+                </>
+              )}
             </select>
           </div>
 
@@ -195,12 +234,12 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
             ></textarea>
           </div>
 
-          <!-- Botón de Enviar -->
+          <!-- Botón de Enviar (Dinámico) -->
           <button 
             type="submit" 
             class="w-full bg-sps-blue hover:bg-sps-navy text-white font-bold py-4 rounded-xl shadow-lg transition-all text-base tracking-wide uppercase cursor-pointer"
           >
-            Enviar Solicitud
+            {formSubmitButtonText}
           </button>
         </form>
       </div>
@@ -208,3 +247,4 @@ const pageSubtitle = contactData?.subtitle || 'Estamos listos para evaluar los r
     </div>
   </section>
 </BaseLayout>
+
