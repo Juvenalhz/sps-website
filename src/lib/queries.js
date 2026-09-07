@@ -26,6 +26,7 @@ export async function getHomePage() {
         placement,
         customTitle,
         customDescription,
+        customImage,
         position,
         service->{
           _id,

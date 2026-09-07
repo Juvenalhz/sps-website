@@ -52,8 +52,8 @@ const clientesList = [...baseClientes, ...baseClientes, ...baseClientes];
 
     <!-- Track Animado -->
     <div class="flex items-center gap-12 sm:gap-16 w-max animate-marquee hover:[animation-play-state:paused] py-4">
-      {clientesList.map((cliente: any, index: number) => (
-        <div key={index} class="flex items-center justify-center shrink-0 w-32 sm:w-40 transition-all duration-300 opacity-80 hover:opacity-100 hover:scale-110 cursor-pointer">
+      {clientesList.map((cliente: any) => (
+        <div class="flex items-center justify-center shrink-0 w-32 sm:w-40 transition-all duration-300 opacity-80 hover:opacity-100 hover:scale-110 cursor-pointer">
           <img 
             src={cliente.logoUrl} 
             alt={`Logo de ${cliente.name}`} 

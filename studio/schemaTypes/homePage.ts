@@ -35,7 +35,7 @@ export const homePage = defineType({
       name: 'interactiveBackgroundImage',
       title: 'Imagen de Fondo de la Sección Interactiva (Hotspots)',
       type: 'image',
-      description: 'Tamaño recomendado: 1920 x 1080 px (Oficina o centro de monitoreo amplio y bien iluminado)',
+      description: 'Tamaño recomendado: 1920 x 900 px (o 2560 x 1200 px en 4K). Oficina o centro de monitoreo panorámico.',
       options: {
         hotspot: true,
       },
@@ -69,6 +69,15 @@ export const homePage = defineType({
               title: 'Descripción Personalizada (Opcional)',
               type: 'text',
               description: 'Si se deja vacío, tomará la descripción del servicio seleccionado.',
+            }),
+            defineField({
+              name: 'customImage',
+              title: 'Imagen del Botón / Icono del Hotspot (PNG sin fondo)',
+              type: 'image',
+              description: '📸 Sube la foto o recortes PNG transparentes (Cámara, Laptop, Radio, Teléfono, Casco, etc.) que se mostrará dentro del círculo.',
+              options: {
+                hotspot: true,
+              },
             }),
             defineField({
               name: 'placement',
