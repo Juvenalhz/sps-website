@@ -7,8 +7,16 @@ const homeData = await getHomePage();
 
 const heroTitle = homeData?.heroTitle || 'SOLUCIONES INTEGRALES DE SEGURIDAD Y GESTIÓN DE RIESGOS';
 const heroSubtitle = homeData?.heroSubtitle || 'Protegemos personas, activos y operaciones con estándares internacionales.';
-const videoUrl = homeData?.heroVideoUrl || '/videos/hero-monitoreo.mp4';
-const heroImageUrl = homeData?.heroImage ? urlFor(homeData.heroImage)?.url() : null;
+
+// Orden de prioridad del fondo:
+// 1. Video desde Sanity (archivo subido o URL externa)
+// 2. Imagen desde Sanity (si no hay video en Sanity)
+// 3. Video local por defecto (fallback si no se ha subido nada en Sanity)
+const sanityVideoUrl = homeData?.heroVideoUrl || null;
+const sanityImageUrl = homeData?.heroImage ? urlFor(homeData.heroImage)?.url() : null;
+const fallbackVideoUrl = '/videos/hero-monitoreo.mp4';
+
+const activeVideoUrl = sanityVideoUrl || (!sanityImageUrl ? fallbackVideoUrl : null);
 ---
 
 <section
@@ -16,13 +24,7 @@ const heroImageUrl = homeData?.heroImage ? urlFor(homeData.heroImage)?.url() : n
 >
     <!-- FONDO: Video o Imagen con Overlay Oscuro -->
     <div class="absolute inset-0 z-0 overflow-hidden">
-        {heroImageUrl && !homeData?.heroVideoUrl ? (
-            <img 
-                src={heroImageUrl} 
-                alt={heroTitle} 
-                class="w-full h-full object-cover" 
-            />
-        ) : (
+        {activeVideoUrl ? (
             <video
                 autoplay
                 muted
@@ -30,10 +32,16 @@ const heroImageUrl = homeData?.heroImage ? urlFor(homeData.heroImage)?.url() : n
                 playsinline
                 class="w-full h-full object-cover"
             >
-                <source src={videoUrl} type="video/mp4" />
+                <source src={activeVideoUrl} type="video/mp4" />
                 Tu navegador no soporta videos HTML5.
             </video>
-        )}
+        ) : sanityImageUrl ? (
+            <img 
+                src={sanityImageUrl} 
+                alt={heroTitle} 
+                class="w-full h-full object-cover" 
+            />
+        ) : null}
 
         <!-- Capa de oscurecimiento (Overlay) para garantizar la legibilidad del texto -->
         <div class="absolute inset-0 bg-sps-navy/70 z-10"></div>

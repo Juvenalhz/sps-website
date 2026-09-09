@@ -18,9 +18,19 @@ export const homePage = defineType({
       type: 'text',
     }),
     defineField({
+      name: 'heroVideoFile',
+      title: 'Archivo de Video del Hero (MP4 / WebM)',
+      type: 'file',
+      description: 'Sube directamente el video para el Hero. Recomendado: MP4 optimizado, máximo 15 MB.',
+      options: {
+        accept: 'video/*',
+      },
+    }),
+    defineField({
       name: 'heroVideoUrl',
-      title: 'URL del Video de Fondo (Central de Monitoreo)',
+      title: 'URL Externa del Video (Opcional si no subes archivo)',
       type: 'url',
+      description: 'Enlace directo a un video alojado externamente (solo si no usas la opción de subir archivo).',
     }),
     defineField({
       name: 'heroImage',

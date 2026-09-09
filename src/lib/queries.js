@@ -20,6 +20,7 @@ export async function getHomePage() {
   try {
     const data = await sanityClient.fetch(`*[_type == "homePage"][0]{
       ...,
+      "heroVideoUrl": coalesce(heroVideoFile.asset->url, heroVideoUrl),
       "interactiveBgUrl": interactiveBackgroundImage.asset->url,
       hotspots[]{
         _key,
