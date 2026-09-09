@@ -11,6 +11,14 @@ const { lang } = Astro.props;
 const currentLang =
   lang || (Astro.url.pathname.startsWith("/en") ? "en" : "es");
 
+const pathname = Astro.url.pathname;
+const isHomePage =
+  pathname === "/" ||
+  pathname === "/es" ||
+  pathname === "/es/" ||
+  pathname === "/en" ||
+  pathname === "/en/";
+
 const settings = await getSiteSettings();
 const logoUrl = settings?.logo ? urlFor(settings.logo)?.url() : null;
 const siteTitle = settings?.siteTitle || "SPS";
@@ -19,22 +27,29 @@ const siteTitle = settings?.siteTitle || "SPS";
 <header
   id="main-header"
   data-current-lang={currentLang}
-  class="bg-white border-b-4 border-sps-blue shadow-sm sticky top-0 z-50"
+  data-is-home={isHomePage ? "true" : "false"}
+  class={isHomePage
+    ? "fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out bg-gradient-to-b from-black/70 via-black/30 to-transparent border-b-4 border-transparent"
+    : "bg-white border-b-4 border-sps-blue shadow-sm sticky top-0 z-50 transition-all duration-300"}
 >
   <div
     class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20 lg:h-22"
   >
-    <!-- Logo SPS (Máximo provecho del alto sin engordar el header) -->
+    <!-- Logo SPS -->
     <a href="/" class="flex items-center gap-3 h-full py-1.5 shrink-0">
       {
         logoUrl ? (
           <img
             src={logoUrl}
             alt={siteTitle}
-            class="h-full w-auto object-contain max-h-[68px] lg:max-h-[76px] transition-all"
+            class="h-full w-auto object-contain max-h-[68px] lg:max-h-[76px] transition-all logo-img"
           />
         ) : (
-          <div class="text-3xl font-extrabold text-sps-blue tracking-tighter">
+          <div
+            class={`text-3xl font-extrabold tracking-tighter transition-colors logo-text ${
+              isHomePage ? "text-white" : "text-sps-blue"
+            }`}
+          >
             {siteTitle}
           </div>
         )
@@ -45,22 +60,30 @@ const siteTitle = settings?.siteTitle || "SPS";
     <nav class="hidden md:flex items-center gap-8">
       <a
         href="/nosotros"
-        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        class={`nav-link text-sm font-bold transition-colors ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Sobre Nosotros</a
       >
       <a
         href="/servicios"
-        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        class={`nav-link text-sm font-bold transition-colors ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Servicios</a
       >
       <a
         href="/blog"
-        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        class={`nav-link text-sm font-bold transition-colors ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Blog</a
       >
       <a
         href="/contacto"
-        class="text-sm font-bold text-sps-blue hover:text-sps-navy transition-colors"
+        class={`nav-link text-sm font-bold transition-colors ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Contacto</a
       >
     </nav>
@@ -68,7 +91,12 @@ const siteTitle = settings?.siteTitle || "SPS";
     <!-- Botones y Banderas Desktop -->
     <div class="hidden md:flex items-center gap-6">
       <!-- Selector de Idioma -->
-      <div class="flex items-center gap-3 border-r-2 border-gray-200 pr-6">
+      <div
+        id="lang-divider"
+        class={`flex items-center gap-3 border-r-2 pr-6 transition-colors ${
+          isHomePage ? "border-white/20" : "border-gray-200"
+        }`}
+      >
         <button
           type="button"
           id="btn-lang-es"
@@ -97,8 +125,13 @@ const siteTitle = settings?.siteTitle || "SPS";
 
       <!-- Botón Call to Action -->
       <a
+        id="cta-button"
         href="/contacto"
-        class="bg-sps-blue text-white px-6 py-2.5 rounded-full font-bold text-sm hover:bg-sps-navy transition-all shadow-md"
+        class={`px-6 py-2.5 rounded-full font-bold text-sm transition-all shadow-md ${
+          isHomePage
+            ? "bg-sps-yellow text-sps-navy hover:bg-white"
+            : "bg-sps-blue text-white hover:bg-sps-navy"
+        }`}
       >
         Solicitar evaluación
       </a>
@@ -108,7 +141,11 @@ const siteTitle = settings?.siteTitle || "SPS";
     <button
       type="button"
       id="btn-mobile-toggle"
-      class="md:hidden text-sps-blue p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
+      class={`md:hidden p-2 rounded-lg transition-colors cursor-pointer ${
+        isHomePage
+          ? "text-white hover:bg-white/10"
+          : "text-sps-blue hover:bg-gray-100"
+      }`}
       aria-label="Menú principal"
     >
       <svg
@@ -129,33 +166,47 @@ const siteTitle = settings?.siteTitle || "SPS";
   <!-- Menú Desplegable Móvil -->
   <div
     id="mobile-menu"
-    class="hidden md:hidden bg-white border-t border-gray-100 px-6 py-6 space-y-5 shadow-xl transition-all"
+    class={`hidden md:hidden px-6 py-6 space-y-5 shadow-xl transition-all ${
+      isHomePage
+        ? "bg-sps-navy/95 backdrop-blur-md text-white border-t border-white/10"
+        : "bg-white border-t border-gray-100 text-sps-blue"
+    }`}
   >
     <nav class="flex flex-col space-y-4">
       <a
         href="/nosotros"
-        class="text-base font-bold text-sps-blue hover:text-sps-navy transition-colors py-1"
+        class={`text-base font-bold transition-colors py-1 ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Sobre Nosotros</a
       >
       <a
         href="/servicios"
-        class="text-base font-bold text-sps-blue hover:text-sps-navy transition-colors py-1"
+        class={`text-base font-bold transition-colors py-1 ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Servicios</a
       >
       <a
         href="/blog"
-        class="text-base font-bold text-sps-blue hover:text-sps-navy transition-colors py-1"
+        class={`text-base font-bold transition-colors py-1 ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Blog</a
       >
       <a
         href="/contacto"
-        class="text-base font-bold text-sps-blue hover:text-sps-navy transition-colors py-1"
+        class={`text-base font-bold transition-colors py-1 ${
+          isHomePage ? "text-white hover:text-sps-yellow" : "text-sps-blue hover:text-sps-navy"
+        }`}
         >Contacto</a
       >
     </nav>
 
     <div
-      class="pt-4 border-t border-gray-100 flex items-center justify-between"
+      class={`pt-4 flex items-center justify-between border-t ${
+        isHomePage ? "border-white/10" : "border-gray-100"
+      }`}
     >
       <!-- Selector de Idioma Móvil -->
       <div class="flex items-center gap-4">
@@ -188,7 +239,11 @@ const siteTitle = settings?.siteTitle || "SPS";
       <!-- Botón CTA Móvil -->
       <a
         href="/contacto"
-        class="bg-sps-blue text-white px-5 py-2.5 rounded-full font-bold text-xs hover:bg-sps-navy transition-all shadow-md uppercase tracking-wider"
+        class={`px-5 py-2.5 rounded-full font-bold text-xs transition-all shadow-md uppercase tracking-wider ${
+          isHomePage
+            ? "bg-sps-yellow text-sps-navy hover:bg-white"
+            : "bg-sps-blue text-white hover:bg-sps-navy"
+        }`}
       >
         Solicitar evaluación
       </a>
@@ -199,9 +254,88 @@ const siteTitle = settings?.siteTitle || "SPS";
 <script>
   // @ts-nocheck
   function setupHeader() {
-    const btnMobileToggle = document.getElementById("btn-mobile-toggle");
+    const header = document.getElementById("main-header");
+    if (!header) return;
+
+    const isHome = header.dataset.isHome === "true";
+    const navLinks = document.querySelectorAll(".nav-link");
+    const ctaButton = document.getElementById("cta-button");
+    const mobileToggle = document.getElementById("btn-mobile-toggle");
+    const langDivider = document.getElementById("lang-divider");
+    const logoText = document.querySelector(".logo-text");
     const mobileMenu = document.getElementById("mobile-menu");
 
+    if (isHome) {
+      function updateHeaderOnScroll() {
+        const isScrolled = window.scrollY > 20;
+
+        if (isScrolled) {
+          // Estado al hacer Scroll en Inicio: Fondo blanco con desenfoque
+          header.classList.remove("bg-gradient-to-b", "from-black/70", "via-black/30", "to-transparent", "border-transparent");
+          header.classList.add("bg-white/95", "backdrop-blur-md", "border-b-4", "border-sps-blue", "shadow-md");
+
+          navLinks.forEach((link) => {
+            link.classList.remove("text-white", "hover:text-sps-yellow");
+            link.classList.add("text-sps-blue", "hover:text-sps-navy");
+          });
+
+          if (ctaButton) {
+            ctaButton.classList.remove("bg-sps-yellow", "text-sps-navy", "hover:bg-white");
+            ctaButton.classList.add("bg-sps-blue", "text-white", "hover:bg-sps-navy");
+          }
+
+          if (mobileToggle) {
+            mobileToggle.classList.remove("text-white", "hover:bg-white/10");
+            mobileToggle.classList.add("text-sps-blue", "hover:bg-gray-100");
+          }
+
+          if (langDivider) {
+            langDivider.classList.remove("border-white/20");
+            langDivider.classList.add("border-gray-200");
+          }
+
+          if (logoText) {
+            logoText.classList.remove("text-white");
+            logoText.classList.add("text-sps-blue");
+          }
+        } else {
+          // Estado Inicial en Inicio: Transparente sobre el video
+          header.classList.remove("bg-white/95", "backdrop-blur-md", "border-b-4", "border-sps-blue", "shadow-md");
+          header.classList.add("bg-gradient-to-b", "from-black/70", "via-black/30", "to-transparent", "border-transparent");
+
+          navLinks.forEach((link) => {
+            link.classList.remove("text-sps-blue", "hover:text-sps-navy");
+            link.classList.add("text-white", "hover:text-sps-yellow");
+          });
+
+          if (ctaButton) {
+            ctaButton.classList.remove("bg-sps-blue", "text-white", "hover:bg-sps-navy");
+            ctaButton.classList.add("bg-sps-yellow", "text-sps-navy", "hover:bg-white");
+          }
+
+          if (mobileToggle) {
+            mobileToggle.classList.remove("text-sps-blue", "hover:bg-gray-100");
+            mobileToggle.classList.add("text-white", "hover:bg-white/10");
+          }
+
+          if (langDivider) {
+            langDivider.classList.remove("border-gray-200");
+            langDivider.classList.add("border-white/20");
+          }
+
+          if (logoText) {
+            logoText.classList.remove("text-sps-blue");
+            logoText.classList.add("text-white");
+          }
+        }
+      }
+
+      window.addEventListener("scroll", updateHeaderOnScroll, { passive: true });
+      updateHeaderOnScroll();
+    }
+
+    // Toggle menú móvil
+    const btnMobileToggle = document.getElementById("btn-mobile-toggle");
     btnMobileToggle?.addEventListener("click", () => {
       mobileMenu?.classList.toggle("hidden");
     });
@@ -241,7 +375,7 @@ const siteTitle = settings?.siteTitle || "SPS";
           "scale-110",
           "opacity-100",
           "ring-2",
-          "ring-sps-blue",
+          "ring-sps-yellow",
           "rounded-sm",
           "shadow-md",
         );
@@ -253,6 +387,7 @@ const siteTitle = settings?.siteTitle || "SPS";
           "scale-110",
           "opacity-100",
           "ring-2",
+          "ring-sps-yellow",
           "ring-sps-blue",
           "rounded-sm",
           "shadow-md",

@@ -20,9 +20,9 @@ const activeVideoUrl = sanityVideoUrl || (!sanityImageUrl ? fallbackVideoUrl : n
 ---
 
 <section
-    class="relative w-full h-[85vh] bg-sps-navy flex items-center overflow-hidden"
+    class="relative w-full h-[90vh] min-h-[600px] bg-sps-navy flex items-center overflow-hidden"
 >
-    <!-- FONDO: Video o Imagen con Overlay Oscuro -->
+    <!-- FONDO: Video o Imagen que inicia desde la parte superior (y=0) -->
     <div class="absolute inset-0 z-0 overflow-hidden">
         {activeVideoUrl ? (
             <video
@@ -30,7 +30,7 @@ const activeVideoUrl = sanityVideoUrl || (!sanityImageUrl ? fallbackVideoUrl : n
                 muted
                 loop
                 playsinline
-                class="w-full h-full object-cover"
+                class="w-full h-full object-cover object-center"
             >
                 <source src={activeVideoUrl} type="video/mp4" />
                 Tu navegador no soporta videos HTML5.
@@ -39,16 +39,14 @@ const activeVideoUrl = sanityVideoUrl || (!sanityImageUrl ? fallbackVideoUrl : n
             <img 
                 src={sanityImageUrl} 
                 alt={heroTitle} 
-                class="w-full h-full object-cover" 
+                class="w-full h-full object-cover object-center" 
             />
         ) : null}
 
-        <!-- Capa de oscurecimiento (Overlay) para garantizar la legibilidad del texto -->
-        <div class="absolute inset-0 bg-sps-navy/70 z-10"></div>
     </div>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+    <!-- CONTENIDO PRINCIPAL (con padding superior para el header transparente) -->
+    <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full pt-28 lg:pt-32 pb-12">
         <div class="max-w-5xl lg:w-3/4">
             <!-- Título principal -->
             <h1
