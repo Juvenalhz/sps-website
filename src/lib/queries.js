@@ -90,7 +90,7 @@ export async function getServicesPage() {
  */
 export async function getServices() {
   try {
-    const data = await sanityClient.fetch(`*[_type == "service"]{
+    const data = await sanityClient.fetch(`*[_type == "service"] | order(coalesce(order, 99) asc, _createdAt asc){
       _id,
       title,
       slug,
@@ -101,6 +101,7 @@ export async function getServices() {
       highlights,
       specifications,
       icon,
+      order,
       "galleryUrls": gallery[].asset->url,
       serviceLink
     }`);

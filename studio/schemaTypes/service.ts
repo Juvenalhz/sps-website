@@ -6,6 +6,13 @@ export const service = defineType({
   type: 'document',
   fields: [
     defineField({
+      name: 'order',
+      title: 'Orden de Aparición (Ej: 1, 2, 3...)',
+      type: 'number',
+      description: 'Número para controlar el orden en la página (los números menores salen primero: 1, 2, 3...)',
+      initialValue: 1,
+    }),
+    defineField({
       name: 'title',
       title: 'Título del Servicio',
       type: 'string',
