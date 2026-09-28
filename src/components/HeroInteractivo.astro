@@ -2,6 +2,7 @@
 // src/components/HeroInteractivo.astro
 import { getHomePage, getServices } from '../lib/queries';
 import { urlFor } from '../lib/sanity';
+import { getTranslation } from '../utils/i18n';
 
 interface Props {
   title?: string;
@@ -9,9 +10,17 @@ interface Props {
   ctaText?: string;
   ctaLink?: string;
   lang?: string;
+  servicesTitle?: string;
+  servicesSubtitle?: string;
 }
 
-const { lang = 'es' } = Astro.props;
+const { lang: propLang, servicesTitle: customServicesTitle, servicesSubtitle: customServicesSubtitle } = Astro.props;
+
+const currentLang = propLang || (Astro.url.pathname.startsWith("/en") ? "en" : "es");
+const servicesTitleText = customServicesTitle || getTranslation(currentLang, 'services.title');
+const servicesSubtitleText = customServicesSubtitle || getTranslation(currentLang, 'services.subtitle');
+const moreInfoText = getTranslation(currentLang, 'services.more_info');
+const defaultServicesLink = currentLang === 'en' ? '/en/services' : (currentLang === 'es' ? '/es/servicios' : '/servicios');
 
 // Consultar datos de Sanity
 const homePageData = await getHomePage();
@@ -98,7 +107,7 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
     const serviceImgUrl = service.icon ? urlFor(service.icon)?.width(300).height(300).url() : null;
     const imageUrl = customImgUrl || serviceImgUrl;
     const slugCurrent = service.slug?.current || '';
-    const linkUrl = '/servicios';
+    const linkUrl = defaultServicesLink;
 
     return {
       id: item._key || service._id || `hotspot-${index}`,
@@ -116,7 +125,7 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
     const defaultPos = defaultPositions[index % defaultPositions.length];
     const imageUrl = service.icon ? urlFor(service.icon)?.width(100).height(100).url() : null;
     const slugCurrent = service.slug?.current || '';
-    const linkUrl = '/servicios';
+    const linkUrl = defaultServicesLink;
 
     return {
       id: service._id || `service-${index}`,
@@ -132,7 +141,7 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
 } else {
   hotspots = staticHotspots.map((item) => ({
     ...item,
-    linkUrl: '/servicios'
+    linkUrl: defaultServicesLink
   }));
 }
 ---
@@ -179,12 +188,19 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
             <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-2">{hotspot.title}</h3>
             <p class="text-sm text-gray-600 dark:text-gray-300 mb-5">{hotspot.description}</p>
             <a href={hotspot.linkUrl} class="inline-flex items-center justify-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-full text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-              Más información
+              {moreInfoText}
             </a>
           </div>
         </div>
       ))}
     </div>
+  </div>
+
+  <!-- Texto Overlay en la parte inferior central de la imagen interactiva -->
+  <div class="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-center w-full px-4 flex flex-col items-center">
+    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-sans font-normal text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] tracking-normal">
+      {servicesTitleText}
+    </h2>
   </div>
 </section>
 
@@ -192,8 +208,7 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
 <section class="block md:hidden bg-sps-navy py-16 px-6 text-white">
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-10">
-      <span class="text-sps-yellow font-bold uppercase text-xs tracking-wider">Soluciones Integrales</span>
-      <h2 class="text-3xl font-oswald font-bold uppercase tracking-tight mt-1">Nuestros Servicios</h2>
+      <h2 class="text-2xl sm:text-3xl font-sans font-normal text-white tracking-normal">{servicesTitleText}</h2>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -214,7 +229,7 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
             href={hotspot.linkUrl} 
             class="inline-block text-center text-xs font-bold uppercase tracking-wider text-sps-yellow hover:text-white border border-sps-yellow/40 hover:border-white rounded-full py-2.5 px-4 transition-colors"
           >
-            Más información
+            {moreInfoText}
           </a>
         </div>
       ))}
@@ -377,5 +392,4 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
 
   initHeroInteractivo();
   document.addEventListener('astro:page-load', initHeroInteractivo);
-</script>
 </script>
