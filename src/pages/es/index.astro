@@ -17,6 +17,7 @@ const t = (key: string) => getTranslation(lang, key);
 
 <BaseLayout title="SPS - Inicio" lang={lang}>
   <Hero />
+  <Estadisticas />
   <SobreNosotros />
   <HeroInteractivo
     title={t("hero.title")}
@@ -25,7 +26,6 @@ const t = (key: string) => getTranslation(lang, key);
     ctaLink={`/${lang}/${t("nav.services_url")}`}
   />
   <PorQueElegirnos />
-  <Estadisticas />
   <Clientes />
   <BlogPreview />
   <Ubicacion />
