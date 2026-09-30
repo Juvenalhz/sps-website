@@ -33,27 +33,33 @@ const siteTitle = settings?.siteTitle || "SPS";
     : "bg-white border-b-4 border-sps-blue shadow-sm sticky top-0 z-50 transition-all duration-300"}
 >
   <div
-    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-20 lg:h-22"
+    class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center py-3 lg:py-4 min-h-[88px] lg:min-h-[96px]"
   >
-    <!-- Logo SPS -->
-    <a href="/" class="flex items-center gap-3 h-full py-1.5 shrink-0">
-      {
-        logoUrl ? (
-          <img
-            src={logoUrl}
-            alt={siteTitle}
-            class="h-full w-auto object-contain max-h-[68px] lg:max-h-[76px] transition-all logo-img"
-          />
-        ) : (
-          <div
-            class={`text-3xl font-extrabold tracking-tighter transition-colors logo-text ${
-              isHomePage ? "text-white" : "text-sps-blue"
-            }`}
-          >
-            {siteTitle}
-          </div>
-        )
-      }
+    <!-- Logo SPS (Efecto Overhang & Auditoría de Asset) -->
+    <a
+      href="/"
+      class="relative z-20 flex items-center shrink-0 py-1 group my-auto"
+      aria-label={siteTitle}
+    >
+      <div class="relative overflow-visible flex items-center">
+        {
+          logoUrl ? (
+            <img
+              src={logoUrl}
+              alt={siteTitle}
+              class="w-auto h-auto max-h-[88px] sm:max-h-[100px] lg:max-h-[114px] -my-3 sm:-my-4 lg:-my-5 origin-left transform scale-110 sm:scale-115 lg:scale-125 group-hover:scale-130 object-contain transition-all duration-300 drop-shadow-md logo-img"
+            />
+          ) : (
+            <div
+              class={`text-3xl sm:text-4xl font-extrabold tracking-tighter transition-all transform origin-left group-hover:scale-105 logo-text ${
+                isHomePage ? "text-white" : "text-sps-blue"
+              }`}
+            >
+              {siteTitle}
+            </div>
+          )
+        }
+      </div>
     </a>
 
     <!-- Navegación Desktop -->
