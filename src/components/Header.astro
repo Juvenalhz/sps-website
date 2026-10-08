@@ -94,38 +94,34 @@ const siteTitle = settings?.siteTitle || "SPS";
       >
     </nav>
 
-    <!-- Botones y Banderas Desktop -->
+    <!-- Botones y Selector de Idioma (ES / EN) Desktop -->
     <div class="hidden md:flex items-center gap-6">
       <!-- Selector de Idioma -->
       <div
         id="lang-divider"
-        class={`flex items-center gap-3 border-r-2 pr-6 transition-colors ${
-          isHomePage ? "border-white/20" : "border-gray-200"
+        translate="no"
+        class={`notranslate flex items-center gap-1 border-r-2 pr-6 transition-colors text-xs tracking-wider ${
+          isHomePage ? "border-white/20 text-white" : "border-gray-200 text-sps-blue"
         }`}
       >
         <button
           type="button"
           id="btn-lang-es"
-          title="Español (Venezuela)"
-          class="transition-all duration-200 opacity-40 hover:opacity-100 hover:scale-105 cursor-pointer p-0.5 rounded"
+          title="Español"
+          class="notranslate px-2 py-1 rounded transition-all duration-200 cursor-pointer font-bold select-none"
+          translate="no"
         >
-          <img
-            src="https://flagcdn.com/w20/ve.png"
-            alt="Bandera Venezuela"
-            class="w-6 h-auto rounded-sm"
-          />
+          ES
         </button>
+        <span class="notranslate opacity-40 select-none font-normal" translate="no">/</span>
         <button
           type="button"
           id="btn-lang-en"
-          title="English (USA)"
-          class="transition-all duration-200 opacity-40 hover:opacity-100 hover:scale-105 cursor-pointer p-0.5 rounded"
+          title="English"
+          class="notranslate px-2 py-1 rounded transition-all duration-200 cursor-pointer font-bold select-none"
+          translate="no"
         >
-          <img
-            src="https://flagcdn.com/w20/us.png"
-            alt="Bandera USA"
-            class="w-6 h-auto rounded-sm"
-          />
+          EN
         </button>
       </div>
 
@@ -215,30 +211,25 @@ const siteTitle = settings?.siteTitle || "SPS";
       }`}
     >
       <!-- Selector de Idioma Móvil -->
-      <div class="flex items-center gap-4">
+      <div class="notranslate flex items-center gap-1 text-xs tracking-wider font-bold" translate="no">
         <button
           type="button"
           id="btn-lang-es-mobile"
-          title="Español (Venezuela)"
-          class="transition-all duration-200 opacity-40 hover:opacity-100 p-1 rounded"
+          title="Español"
+          class="notranslate px-2.5 py-1 rounded transition-all duration-200 cursor-pointer select-none"
+          translate="no"
         >
-          <img
-            src="https://flagcdn.com/w20/ve.png"
-            alt="Bandera Venezuela"
-            class="w-7 h-auto rounded-sm"
-          />
+          ES
         </button>
+        <span class={`notranslate opacity-40 select-none font-normal ${isHomePage ? 'text-white' : 'text-sps-blue'}`} translate="no">/</span>
         <button
           type="button"
           id="btn-lang-en-mobile"
-          title="English (USA)"
-          class="transition-all duration-200 opacity-40 hover:opacity-100 p-1 rounded"
+          title="English"
+          class="notranslate px-2.5 py-1 rounded transition-all duration-200 cursor-pointer select-none"
+          translate="no"
         >
-          <img
-            src="https://flagcdn.com/w20/us.png"
-            alt="Bandera USA"
-            class="w-7 h-auto rounded-sm"
-          />
+          EN
         </button>
       </div>
 
@@ -296,8 +287,8 @@ const siteTitle = settings?.siteTitle || "SPS";
           }
 
           if (langDivider) {
-            langDivider.classList.remove("border-white/20");
-            langDivider.classList.add("border-gray-200");
+            langDivider.classList.remove("border-white/20", "text-white");
+            langDivider.classList.add("border-gray-200", "text-sps-blue");
           }
 
           if (logoText) {
@@ -325,8 +316,8 @@ const siteTitle = settings?.siteTitle || "SPS";
           }
 
           if (langDivider) {
-            langDivider.classList.remove("border-gray-200");
-            langDivider.classList.add("border-white/20");
+            langDivider.classList.remove("border-gray-200", "text-sps-blue");
+            langDivider.classList.add("border-white/20", "text-white");
           }
 
           if (logoText) {
@@ -364,7 +355,7 @@ const siteTitle = settings?.siteTitle || "SPS";
         "; path=/";
     }
 
-    function updateFlagStyles() {
+    function updateLangStyles() {
       const googtrans = getCookie("googtrans") || "";
       const isEnglish =
         googtrans.includes("/en") || window.location.pathname.startsWith("/en");
@@ -377,28 +368,27 @@ const siteTitle = settings?.siteTitle || "SPS";
         : [btnEn, btnEnMobile];
 
       activeBtns.forEach((btn) => {
-        btn?.classList.add(
-          "scale-110",
-          "opacity-100",
-          "ring-2",
-          "ring-sps-yellow",
-          "rounded-sm",
-          "shadow-md",
+        if (!btn) return;
+        btn.classList.add(
+          "bg-sps-yellow",
+          "text-sps-navy",
+          "font-black",
+          "shadow-xs",
+          "scale-105"
         );
-        btn?.classList.remove("opacity-40");
+        btn.classList.remove("opacity-50", "font-medium", "hover:opacity-100");
       });
 
       inactiveBtns.forEach((btn) => {
-        btn?.classList.remove(
-          "scale-110",
-          "opacity-100",
-          "ring-2",
-          "ring-sps-yellow",
-          "ring-sps-blue",
-          "rounded-sm",
-          "shadow-md",
+        if (!btn) return;
+        btn.classList.remove(
+          "bg-sps-yellow",
+          "text-sps-navy",
+          "font-black",
+          "shadow-xs",
+          "scale-105"
         );
-        btn?.classList.add("opacity-40");
+        btn.classList.add("opacity-50", "font-medium", "hover:opacity-100");
       });
     }
 
@@ -422,7 +412,7 @@ const siteTitle = settings?.siteTitle || "SPS";
       });
     });
 
-    updateFlagStyles();
+    updateLangStyles();
   }
 
   setupHeader();

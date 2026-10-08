@@ -84,7 +84,7 @@ const staticHotspots = [
   },
   {
     id: 'seguridad-industrial',
-    title: 'Seguridad Industrial',
+    title: 'Seguridad industrial',
     slug: 'seguridad-industrial',
     description: 'Protocolos de prevención y protección en plantas e instalaciones industriales.',
     position: { top: '70%', left: '90%' },
@@ -196,9 +196,9 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
     </div>
   </div>
 
-  <!-- Texto Overlay en la parte inferior central de la imagen interactiva -->
-  <div class="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-center w-full px-4 flex flex-col items-center">
-    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-sans font-normal text-white drop-shadow-[0_2px_8px_rgba(0,0,0,0.85)] tracking-normal">
+  <!-- Texto Overlay en la parte superior central de la imagen interactiva -->
+  <div class="absolute top-8 sm:top-10 lg:top-12 left-1/2 -translate-x-1/2 z-20 pointer-events-none text-center w-full px-4 flex flex-col items-center">
+    <h2 class="text-3xl sm:text-4xl lg:text-5xl font-oswald font-bold text-sps-blue uppercase tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
       {servicesTitleText}
     </h2>
   </div>
@@ -208,7 +208,7 @@ if (homePageData?.hotspots && homePageData.hotspots.length > 0) {
 <section class="block md:hidden bg-sps-navy py-16 px-6 text-white">
   <div class="max-w-7xl mx-auto">
     <div class="text-center mb-10">
-      <h2 class="text-2xl sm:text-3xl font-sans font-normal text-white tracking-normal">{servicesTitleText}</h2>
+      <h2 class="text-3xl sm:text-4xl font-oswald font-bold text-white uppercase tracking-tight">{servicesTitleText}</h2>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
