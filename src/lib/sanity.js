@@ -81,6 +81,14 @@ export const portableTextComponents = {
     bullet: ({ children }) => `<li class="leading-relaxed">${children}</li>`,
     number: ({ children }) => `<li class="leading-relaxed">${children}</li>`,
   },
+  types: {
+    image: ({ value }) => {
+      const imgUrl = value?.asset ? urlFor(value)?.width(1000).url() : null;
+      if (!imgUrl) return '';
+      const alt = value?.alt || 'Imagen del artículo';
+      return `<figure class="my-8 overflow-hidden rounded-2xl shadow-md"><img src="${imgUrl}" alt="${alt}" class="w-full h-auto object-cover" loading="lazy" /></figure>`;
+    },
+  },
 };
 
 /**

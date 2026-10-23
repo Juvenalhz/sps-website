@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { set, useClient } from 'sanity'
+import { set, useClient, useFormValue } from 'sanity'
 import { Card, Box, Text, Flex, Spinner } from '@sanity/ui'
+
+const FALLBACK_BG = 'https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070'
 
 export function HotspotPinPickerInput(props: any) {
   const { value, onChange } = props
   const client = useClient({ apiVersion: '2024-01-01' })
+  const bgAssetRef = useFormValue(['interactiveBackgroundImage', 'asset', '_ref']) as string | undefined
   const [bgUrl, setBgUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -12,21 +15,22 @@ export function HotspotPinPickerInput(props: any) {
   const leftPercent = value?.leftPercent ?? 50
 
   useEffect(() => {
+    setLoading(true)
+    const query = bgAssetRef
+      ? `*[_id == $ref][0].url`
+      : `coalesce(*[_id == "drafts.homePage"][0].interactiveBackgroundImage.asset->url, *[_type == "homePage"][0].interactiveBackgroundImage.asset->url)`
+
     client
-      .fetch(`*[_type == "homePage"][0].interactiveBackgroundImage.asset->url`)
+      .fetch(query, bgAssetRef ? { ref: bgAssetRef } : {})
       .then((url) => {
-        if (url) {
-          setBgUrl(url)
-        } else {
-          setBgUrl('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070')
-        }
+        setBgUrl(url || FALLBACK_BG)
         setLoading(false)
       })
       .catch(() => {
-        setBgUrl('https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&q=80&w=2070')
+        setBgUrl(FALLBACK_BG)
         setLoading(false)
       })
-  }, [client])
+  }, [client, bgAssetRef])
 
   const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -47,7 +51,7 @@ export function HotspotPinPickerInput(props: any) {
   return (
     <Card padding={2} radius={2} shadow={1} border style={{ backgroundColor: '#ffffff', maxWidth: '750px' }}>
       <Box padding={2}>
-        <Text size={1} weight="bold" style={{ marginBottom: '8px', display: 'block' }}>
+        <Text size={1} weight="bold" style={{ marginBottom: '8px', display: 'block', color: '#0f172a' }}>
           📍 Haz clic en la imagen para ubicar este Hotspot (Posición actual: Vertical {topPercent}%, Horizontal {leftPercent}%)
         </Text>
       </Box>

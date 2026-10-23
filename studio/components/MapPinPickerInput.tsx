@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
-import { set, useClient } from 'sanity'
+import { set, useClient, useFormValue } from 'sanity'
 import { Card, Box, Text, Flex, Spinner } from '@sanity/ui'
 
 export function MapPinPickerInput(props: any) {
   const { value, onChange } = props
   const client = useClient({ apiVersion: '2024-01-01' })
+  const mapAssetRef = useFormValue(['mapImage', 'asset', '_ref']) as string | undefined
   const [mapUrl, setMapUrl] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
@@ -12,14 +13,19 @@ export function MapPinPickerInput(props: any) {
   const leftPercent = value?.leftPercent ?? 50
 
   useEffect(() => {
+    setLoading(true)
+    const query = mapAssetRef
+      ? `*[_id == $ref][0].url`
+      : `coalesce(*[_id == "drafts.homePage"][0].mapImage.asset->url, *[_type == "homePage"][0].mapImage.asset->url)`
+
     client
-      .fetch(`*[_type == "homePage"][0].mapImage.asset->url`)
+      .fetch(query, mapAssetRef ? { ref: mapAssetRef } : {})
       .then((url) => {
         if (url) setMapUrl(url)
         setLoading(false)
       })
       .catch(() => setLoading(false))
-  }, [client])
+  }, [client, mapAssetRef])
 
   const handleMapClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const rect = e.currentTarget.getBoundingClientRect()
@@ -39,6 +45,12 @@ export function MapPinPickerInput(props: any) {
 
   return (
     <Card padding={2} radius={2} shadow={1} border style={{ backgroundColor: '#ffffff', maxWidth: '650px' }}>
+      <Box padding={2}>
+        <Text size={1} weight="bold" style={{ marginBottom: '6px', display: 'block', color: '#0f172a' }}>
+          📍 Haz clic en el mapa para ubicar esta sede (Posición actual: Vertical {topPercent}%, Horizontal {leftPercent}%)
+        </Text>
+      </Box>
+
       {/* Contenedor del Mapa Interactivo 1:1 con la Web */}
       <Box
         onClick={handleMapClick}
@@ -73,7 +85,7 @@ export function MapPinPickerInput(props: any) {
           !loading && (
             <Box padding={4} style={{ textAlign: 'center' }}>
               <Text size={1} style={{ color: '#e11d48', fontWeight: '600' }}>
-                📸 Sube la imagen del mapa 3D en el campo "Imagen del Mapa de Venezuela" para verla aquí.
+                📸 Sube la imagen del mapa 3D en el campo "Imagen del Mapa 3D de Venezuela" (justo arriba) para visualizarla aquí.
               </Text>
             </Box>
           )
