@@ -22,3 +22,8 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+# internal user manuals (keep local, do not publish to repo or public web)
+Manual_Usuario_Sanity_SPS_Risk.pdf
+public/Manual_Usuario_Sanity_SPS_Risk.pdf
+studio/Manual_Usuario_Sanity_SPS_Risk.pdf
