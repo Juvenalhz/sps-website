@@ -26,6 +26,28 @@ const faviconUrl = settings?.favicon
 		<meta name="viewport" content="width=device-width" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title} | SPS Seguridad</title>
+
+		<!-- Purga automática del Service Worker y caché heredado de la web antigua -->
+		<script is:inline>
+			(function () {
+				try {
+					if ('serviceWorker' in navigator) {
+						navigator.serviceWorker.getRegistrations().then(function (registrations) {
+							for (var i = 0; i < registrations.length; i++) {
+								registrations[i].unregister();
+							}
+						});
+					}
+					if ('caches' in window) {
+						caches.keys().then(function (names) {
+							for (var i = 0; i < names.length; i++) {
+								caches.delete(names[i]);
+							}
+						});
+					}
+				} catch (e) {}
+			})();
+		</script>
 		
 		<!-- Widget de Traducción Automática de Google Translate (Client-Side Gratis) -->
 		<script is:inline>
